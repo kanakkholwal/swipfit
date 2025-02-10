@@ -10,7 +10,7 @@ import { mailFetch } from "./server-fetch";
 
 const VERIFY_EMAIL_PATH_PREFIX = "/verify-email?token=";
 
-const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+const baseUrl = process.env.BASE_URL 
 
 export const auth = betterAuth({
   appName: "SwipFit",
