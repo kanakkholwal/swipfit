@@ -116,20 +116,12 @@ export const auth = betterAuth({
         type: "string",
         required: true,
         input: false,
-      },
-      other_roles: {
-        type: "string[]",
-        required: true,
-        input: true,
-      },
-      hostelId: {
-        type: "string",
-        required: false,
-        input: false,
+        defaultValue:"customer"
       },
       genderGroup: {
         type: "string",
         input: true,
+        defaultValue: "not_specified",
       },
       username: {
         type: "string",

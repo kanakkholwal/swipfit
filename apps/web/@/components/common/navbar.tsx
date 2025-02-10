@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Heart, Search, Shirt, TrendingUp } from "lucide-react";
+import { Heart, Search, Shirt, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -55,7 +55,7 @@ export default function Navbar() {
                 size="sm"
                 className="text-gray-400 hover:text-white"
                 asChild>
-                <Link href="/profile">Profile</Link>
+                <Link href="/profile"><User/>Profile</Link>
               </Button>
             ) : (<>
               <Button
@@ -121,16 +121,14 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-gray-400 hover:text-white"
                   asChild>
-                  <Link href="/profile">Profile</Link>
+                  <Link href="/profile"><User/>Profile</Link>
                 </Button>
               )) : (<>
                 <Button
                   variant="ghost"
                   size="sm"
                   width="full"
-                  className="text-gray-400 hover:text-white justify-start"
                   asChild
                 >
                   <Link href="/sign-in">Sign In</Link>

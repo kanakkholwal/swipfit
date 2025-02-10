@@ -69,8 +69,6 @@ export default function SignUpForm() {
                 callbackURL: redirect,
                 name: data.name,
                 username: data.email.split("@")[0],
-                other_roles: ["customer"],
-                genderGroup: "not_specified",
             },
             {
                 onRequest: () => {
