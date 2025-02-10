@@ -6,10 +6,12 @@ import { Heart, Search, Shirt, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useSession } from "~/lib/auth-client";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   const navItems = [
     { href: "/search", label: "Search", icon: Search },
@@ -47,21 +49,31 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-gray-400 hover:text-white"
-              asChild
-            >
-              <Link href="/sign-in">Sign In</Link>
-            </Button>
-            <Button
-              size="sm"
-              className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
-              asChild
-            >
-              <Link href="/register">Get Started</Link>
-            </Button>
+            {session?.user ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 hover:text-white"
+                asChild>
+                <Link href="/profile">Profile</Link>
+              </Button>
+            ) : (<>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 hover:text-white"
+                asChild
+              >
+                <Link href="/sign-in">Sign In</Link>
+              </Button>
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                asChild
+              >
+                <Link href="/register">Get Started</Link>
+              </Button></>)
+            }
           </div>
         </div>
 
@@ -96,9 +108,8 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center space-x-2 text-sm font-medium transition-colors hover:text-pink-500 ${
-                  pathname === href ? "text-pink-500" : "text-gray-400"
-                }`}
+                className={`flex items-center space-x-2 text-sm font-medium transition-colors hover:text-pink-500 ${pathname === href ? "text-pink-500" : "text-gray-400"
+                  }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 <Icon className="h-4 w-4" />
@@ -106,26 +117,36 @@ export default function Navbar() {
               </Link>
             ))}
             <div className="flex flex-col space-y-2 pt-4 border-t border-white/10">
-              <Button
-                variant="ghost"
-                size="sm"
-                width="full"
-                className="text-gray-400 hover:text-white justify-start"
-                asChild
-              >
-                <Link href="/sign-in">Sign In</Link>
-              </Button>
-              <Button
-                size="sm"
-                width="full"
-                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
-                asChild
-              >
-                <Link href="/register">
-                Get Started
+              {session?.user ? ((
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-400 hover:text-white"
+                  asChild>
+                  <Link href="/profile">Profile</Link>
+                </Button>
+              )) : (<>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  width="full"
+                  className="text-gray-400 hover:text-white justify-start"
+                  asChild
+                >
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+                <Button
+                  size="sm"
+                  width="full"
+                  className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                  asChild
+                >
+                  <Link href="/register">
+                    Get Started
 
-                </Link>
-              </Button>
+                  </Link>
+                </Button>
+              </>)}
             </div>
           </div>
         </div>
