@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, Settings, Grid, ListFilter } from "lucide-react";
+import { Grid, Heart, LayoutDashboard, ListFilter, Settings } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 // Mock data - in production this would come from an API
 const savedOutfits = [
@@ -64,12 +65,18 @@ export default function ProfilePage() {
               Fashion enthusiast | Style explorer
             </p>
             <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
-              <Button variant="outline" size="sm">
+              <Button variant="ghost" size="sm">
                 Edit Profile
               </Button>
-              <Button variant="outline" size="sm">
-                <Settings className="w-4 h-4 mr-2" />
+              <Button variant="ghost" size="sm">
+                <Settings  />
                 Preferences
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/dashboard">
+                <LayoutDashboard />
+                Dashboard
+                </Link>
               </Button>
             </div>
           </div>
