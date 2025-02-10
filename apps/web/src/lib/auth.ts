@@ -16,6 +16,7 @@ const baseUrl = process.env.BASE_URL
 export const auth = betterAuth({
   appName: "SwipFit",
   baseURL: baseUrl,
+  secret:process.env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
