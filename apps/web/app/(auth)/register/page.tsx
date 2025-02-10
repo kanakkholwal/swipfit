@@ -2,9 +2,9 @@
 
 import { authClient } from "~/lib/auth-client";
 
-import { CardDescription, CardTitle } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { nanoid } from "nanoid";
 import { useState } from "react";
 import { BiLockOpenAlt } from "react-icons/bi";
 import { LuMail } from "react-icons/lu";
@@ -68,7 +68,7 @@ export default function SignUpForm() {
                 password: data.password,
                 callbackURL: redirect,
                 name: data.name,
-                username: data.email.split("@")[0],
+                username: `${data.email.split("@")[0].trim()}_${nanoid()}`
             },
             {
                 onRequest: () => {

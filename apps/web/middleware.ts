@@ -5,6 +5,7 @@ import type { Session } from "~/lib/auth";
 
 const SIGN_IN_PATH = "/sign-in";
 const SIGN_UP_PATH = "/register";
+const VERIFY_EMAIL_PATH = "/verify-email";
 
 
 
@@ -28,7 +29,7 @@ export async function middleware(request: NextRequest) {
         }
     );
     if (!session) {
-        if (request.nextUrl.pathname === SIGN_IN_PATH) {
+        if (request.nextUrl.pathname === SIGN_IN_PATH || request.nextUrl.pathname === SIGN_UP_PATH || request.nextUrl.pathname.startsWith(VERIFY_EMAIL_PATH)) {
             return NextResponse.next();
         }
         // if the user is not authenticated and tries to access a page other than the sign-in page, redirect them to the sign-in page

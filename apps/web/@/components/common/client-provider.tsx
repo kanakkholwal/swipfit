@@ -3,7 +3,8 @@
 // import { ThemeProvider as NextThemesProvider } from "next-themes";
 // import type { ThemeProviderProps } from "next-themes/dist/types";
 import { Next13ProgressBar } from "next13-progressbar";
-
+import { Toaster as HotToaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/toaster";
 export function ClientProvider({ children }: { children: React.ReactNode }) {
   return (
     <>
@@ -14,6 +15,12 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
         options={{ showSpinner: true, trickle: true }}
         showOnShallow={true}
       />
+      <HotToaster
+        position="top-center"
+        
+       
+      />
+      <Toaster />
     </>
   );
 }

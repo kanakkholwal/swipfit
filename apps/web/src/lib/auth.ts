@@ -6,6 +6,7 @@ import { admin, username } from "better-auth/plugins";
 
 import { db } from "~/db/connect";
 import { accounts, sessions, users, verifications } from "~/db/schema";
+import { APP_NAME } from "~/project.config";
 import { mailFetch } from "./server-fetch";
 
 const VERIFY_EMAIL_PATH_PREFIX = "/verify-email?token=";
@@ -41,7 +42,7 @@ export const auth = betterAuth({
           body: JSON.stringify({
             template_key: "reset-password",
             targets: [user.email],
-            subject: "Reset Password",
+            subject: `Reset Password | ${APP_NAME}`,
             payload: {
               name: user.name,
               email: user.email,
@@ -76,9 +77,9 @@ export const auth = betterAuth({
           body: JSON.stringify({
             template_key: "welcome_verify",
             targets: [user.email],
-            subject: "Welcome to College Platform",
+            subject: `Welcome to ${APP_NAME}`,
             payload: {
-              platform_name: "College Platform",
+              platform_name: APP_NAME,
               name: user.name,
               email: user.email,
               verification_url: verification_url,
@@ -116,12 +117,10 @@ export const auth = betterAuth({
         type: "string",
         required: true,
         input: false,
-        defaultValue:"customer"
       },
       genderGroup: {
         type: "string",
-        input: true,
-        defaultValue: "not_specified",
+        input: false,
       },
       username: {
         type: "string",
@@ -146,7 +145,7 @@ export const auth = betterAuth({
   plugins: [
     username(),
     admin({
-      defaultRole: "user",
+      defaultRole: "customer",
       adminRole: ["admin"],
       defaultBanExpiresIn: 60 * 60 * 24 * 7, // 1 week
     }),

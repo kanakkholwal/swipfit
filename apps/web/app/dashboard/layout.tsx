@@ -2,6 +2,8 @@
 
 import { getSession } from "~/lib/auth-server";
 
+import EmptyArea from "@/components/utils/empty-area";
+
 export default async function DashboardLayout({
     children,
     influencer,
@@ -31,15 +33,23 @@ export default async function DashboardLayout({
         case 'brand':
             content = brand;
             break;
+        case 'admin':
+            content = brand;
+            break;
         default:
-            content = <div>Access Denied</div>; // Fallback for unauthorized access
+            // If the user has no role, show an empty area
+            content = <EmptyArea
+                title="No role assigned"
+                description="Please contact the support to get a role assigned."
+            />
     }
     return (
-        <div className="min-h-[calc(100vh-4rem)] bg-muted/50 p-4 md:p-8">
+        <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-background">
             <aside className="sidebar">
                 {/* Sidebar content */}
             </aside>
-            <main className="bg-background rounded-lg p-6 mb-8 max-w-6xl mx-auto">
+            <main className="space-y-8 mb-8 max-w-6xl mx-auto">
+                {children}
                 {content}
             </main>
         </div>
