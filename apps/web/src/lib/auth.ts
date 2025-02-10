@@ -6,7 +6,7 @@ import { admin, username } from "better-auth/plugins";
 
 import { db } from "~/db/connect";
 import { accounts, sessions, users, verifications } from "~/db/schema";
-import { APP_NAME } from "~/project.config";
+import { APP_NAME, ORG_DOMAIN } from "~/project.config";
 import { mailFetch } from "./server-fetch";
 
 const VERIFY_EMAIL_PATH_PREFIX = "/verify-email?token=";
@@ -139,7 +139,7 @@ export const auth = betterAuth({
   advanced: {
     crossSubDomainCookies: {
       enabled: process.env.NODE_ENV === "production",
-      domain: process.env.NODE_ENV === "production" ? "nith.eu.org" : undefined,
+      domain: process.env.NODE_ENV === "production" ? ORG_DOMAIN : undefined,
     },
   },
   plugins: [
