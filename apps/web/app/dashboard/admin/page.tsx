@@ -1,5 +1,7 @@
 import { StatsCard } from "@/components/application/stats-card";
+import { RouterCard } from "@/components/extended/router-card";
 import { ResponsiveContainer } from "@/components/utils/container";
+import { admin_routes } from "@/data/dashboard";
 import { CircleDashed, TrendingDown, TrendingUp } from "lucide-react";
 import { FaGenderless } from "react-icons/fa";
 import { TbUsersGroup } from "react-icons/tb";
@@ -9,8 +11,6 @@ import {
   getUsersByRole,
   users_CountAndGrowth,
 } from "~/actions/dashboard.admin";
-
-
 
 export default async function AdminDashboard() {
   const {
@@ -128,8 +128,27 @@ export default async function AdminDashboard() {
 
 
       </ResponsiveContainer>
-        
-        
+      
+      <div>
+      <h3 className="text-xl font-semibold text-primary mb-4">
+        Quick manage
+      </h3>
+
+      <ResponsiveContainer className="max-w-screen-2xl">
+        {Array.isArray(admin_routes?.dashboard) ? null : admin_routes?.dashboard?.items?.map((route) => {
+          return (
+            <RouterCard
+              key={route.title}
+              href={route.path}
+              title={route.title}
+              description={route.description}
+              Icon={route.Icon}
+            />
+          );
+        })}
+
+        </ResponsiveContainer>
+        </div>
 
     </main>
   );

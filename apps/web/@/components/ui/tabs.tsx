@@ -14,8 +14,9 @@ export const tabListVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-muted ",
+        default: "inline-flex items-center justify-center rounded-lg bg-muted p-0.5 text-muted-foreground/70",
         wide: "container flex-col gap-4 sm:flex-row md:gap-10",
+        line:"h-auto rounded-none border-b border-border bg-transparent p-0"
       },
     },
     defaultVariants: {
@@ -29,8 +30,9 @@ export const tabTriggerVariants = cva(
   {
     variants: {
       variant: {
-        default: "rounded-sm px-3 py-1.5 text-sm",
-        fluid:"rounded-xl px-4 py-3 text-sm font-semibold text-muted-foreground data-[state=active]:bg-muted data-[state=active]:text-primary"
+        default: "rounded-md px-3 py-1.5 text-sm font-medium outline-offset-2 transition-all hover:text-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm data-[state=active]:shadow-black/5",
+        fluid:"rounded-xl px-4 py-3 text-sm font-semibold text-muted-foreground data-[state=active]:bg-muted data-[state=active]:text-primary",
+        line:"relative rounded-none py-2 after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:after:bg-primary"
       },
     },
     defaultVariants: {

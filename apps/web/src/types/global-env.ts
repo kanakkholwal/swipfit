@@ -18,6 +18,7 @@ const envVariables = z.object({
 
 
   NEXT_PUBLIC_BASE_SERVER_URL: z.string().url(),
+  NEXT_PUBLIC_BASE_URL: z.string(),
 
   REDIS_URL: z.string(),
 
