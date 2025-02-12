@@ -1,5 +1,7 @@
 import { createVertex } from "@ai-sdk/google-vertex/edge";
 
+
+
 export const vertex = createVertex({
   project: process.env.GOOGLE_VERTEX_PROJECT,
   location: process.env.GOOGLE_VERTEX_LOCATION,

@@ -25,7 +25,7 @@ export const parseImportFile = async (file: File) => {
         // const workbook = XLSX.read(data, { type: "binary" })
         // const firstSheet = workbook.Sheets[workbook.SheetNames[0]]
         // const jsonData = XLSX.utils.sheet_to_json(firstSheet)
-        // resolve(jsonData)
+        resolve(true)
       } catch (error) {
         reject(new Error("Failed to parse file"))
       }

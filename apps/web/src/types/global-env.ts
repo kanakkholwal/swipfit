@@ -22,6 +22,7 @@ const envVariables = z.object({
 
   REDIS_URL: z.string(),
 
+  // for vertex AI
   GOOGLE_CLIENT_EMAIL: z.string(),
   GOOGLE_PRIVATE_KEY: z.string(),
   GOOGLE_VERTEX_PROJECT: z.string(),

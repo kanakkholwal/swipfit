@@ -10,12 +10,12 @@ const Tabs = TabsPrimitive.Root;
 
 
 export const tabListVariants = cva(
-  "inline-flex h-10 items-center justify-center rounded-md p-1 text-muted-foreground",
+  "inline-flex items-center justify-center rounded-md p-1 text-muted-foreground",
   {
     variants: {
       variant: {
-        default: "inline-flex items-center justify-center rounded-lg bg-muted p-0.5 text-muted-foreground/70",
-        wide: "container flex-col gap-4 sm:flex-row md:gap-10",
+        default: "rounded-lg h-10 bg-muted p-0.5 text-muted-foreground/70",
+        wide: "container flex-wrap gap-4 md:gap-10",
         line:"h-auto rounded-none border-b border-border bg-transparent p-0"
       },
     },
