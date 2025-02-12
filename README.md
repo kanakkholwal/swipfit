@@ -44,7 +44,7 @@ SwipFit is an AI-powered fashion recommendation and outfit discovery platform th
 ### Frontend
 
 - Next.js (React, TypeScript, TailwindCSS)
-- NextAuth.js (Authentication)
+- BetterAuth.js (Authentication)
 
 ### Backend
 
@@ -111,33 +111,10 @@ SwipFit leverages **Google Vertex AI** for:
 - **Textual Classification**: Generating outfit descriptions.
 - **Reverse Image Search**: Finding visually similar outfits.
 
-Example AI Integration:
 
-```typescript
-import { vertexAI } from 'vercel-ai-sdk';
-
-const aiClient = vertexAI({ model: 'text-bison@001' });
-
-const getRecommendations = async (query) => {
-  const response = await aiClient.generate({ prompt: `Find similar outfits for ${query}` });
-  return response;
-};
-```
-
----
-
-## Security Measures
-
-- **AES-256 encryption** for sensitive data.
-- **OAuth & JWT authentication**.
-- **Role-based access control (RBAC)**.
-- **Environment variable management** for API keys.
-
----
 
 ## Performance Optimizations
 
-- **Rate limiting** using `express-rate-limit`.
 - **Redis caching (Upstash)** for AI queries.
 - **Lazy loading & pagination** for search/swipe feeds.
 
