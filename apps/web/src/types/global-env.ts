@@ -11,8 +11,10 @@ const envVariables = z.object({
   BASE_URL: z.string().url(),
   BASE_MAIL_SERVER_URL: z.string().url(),
   SERVER_IDENTITY: z.string(),
+
   MONGODB_URI: z.string(),
   DATABASE_URL: z.string(),
+  REDIS_URL: z.string(),
 
   NODE_ENV: z.string().default("testing"),
 
@@ -20,7 +22,6 @@ const envVariables = z.object({
   NEXT_PUBLIC_BASE_SERVER_URL: z.string().url(),
   NEXT_PUBLIC_BASE_URL: z.string(),
 
-  REDIS_URL: z.string(),
 
   // for vertex AI
   GOOGLE_CLIENT_EMAIL: z.string(),

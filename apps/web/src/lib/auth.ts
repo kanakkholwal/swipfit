@@ -4,7 +4,7 @@ import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { admin, username } from "better-auth/plugins";
 
-import { db } from "~/db/connect";
+import { db } from "~/db/connect.pg";
 import { accounts, sessions, users, verifications } from "~/db/schema";
 import { APP_NAME, ORG_DOMAIN } from "~/project.config";
 import { mailFetch } from "./server-fetch";

@@ -1,7 +1,10 @@
 "use server";
 
 import { rawProductSchema } from "~/constants/product";
-import { classifyImageToObject, generateObjectEmbeddings } from "~/lib/ai/product";
+import dbConnect from "~/db/connect.mongo";
+import ProductModel from "~/db/models/product";
+import { generateObjectEmbeddings } from "~/lib/ai/embedding";
+import { classifyImageToObject } from "~/lib/ai/product";
 
 export async function saveProduct(product: Record<string, unknown>) {
     try {
@@ -21,16 +24,20 @@ export async function saveProduct(product: Record<string, unknown>) {
         }
         // generate embeddings for the product
         const productEmbeddings = await generateObjectEmbeddings(finalProduct);
-
-        // save embeddings to the database
+        console.log(productEmbeddings.length)
 
         // Save product to the database
-
-        // return the final product
-        return Promise.resolve({
+        await dbConnect();
+        const savedProduct = new ProductModel({
             ...finalProduct,
-            embeddings: productEmbeddings,
+            text_embeddings: productEmbeddings,
         });
+
+        await savedProduct.save();
+
+
+        // return the product in json
+        return Promise.resolve(JSON.parse(JSON.stringify(savedProduct)));
 
     } catch (error) {
         console.error('Error saving product:', error);

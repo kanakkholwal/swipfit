@@ -29,24 +29,10 @@ export async function classifyImageToObject(imageUrls: string[]) {
   return result;
 }
 
-export async function generateObjectEmbeddings(
-  object: Record<string, unknown>,
-) {
-  const result = await embed({
-    model: vertex.textEmbeddingModel("text-embedding-004"),
-    value: JSON.stringify(object),
-    maxRetries: 0, // Disable retries
-  });
-  const { embedding } = result;
-  return embedding;
-}
+
 
 const imageUrl =
   "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2024/SEPTEMBER/7/VouyYW4N_3ad45252456a4958acd9ee91ab64942d.jpg";
 // const productAttributes = await classifyImageToObject([imageUrl]);
 
 // console.dir(productAttributes.object, { depth: null });
-// const productEmbeddings = await generateObjectEmbeddings(
-//   productAttributes.object,
-// );
-// console.log(productEmbeddings);

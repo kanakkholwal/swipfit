@@ -54,6 +54,7 @@
     "eslint-config-next": "15.1.6",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.475.0",
+    "mongoose": "^8.10.0",
     "motion": "^12.4.1",
     "nanoid": "^5.0.9",
     "next": "15.1.6",

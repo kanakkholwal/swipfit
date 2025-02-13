@@ -27,7 +27,7 @@ export default function HomePage() {
         description="Experience the future of fashion with personalized AI recommendations that understand your unique style."
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg" variant="brand" asChild>
+          <Button size="lg" variant="gradient_pink" asChild>
             <Link href="/swipe">
               Start Your Style Journey
               <ArrowRight className="ml-2 h-4 w-4" />

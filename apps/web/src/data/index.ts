@@ -36,7 +36,7 @@ export const db: ProductType[] = (
 ).map((product) => ({
   ...product,
   slug: product.description.toLowerCase().split(" ").join("-"),
-}));
+})).filter((product,index,array) => array.findIndex(t => (t.slug === product.slug)) === index);
 
 export function getProductBySlug(slug: string): Promise<ProductType | null> {
   const product = db.find((p) => p.slug === slug) || null;

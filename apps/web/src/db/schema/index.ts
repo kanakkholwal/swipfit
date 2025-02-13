@@ -5,4 +5,4 @@ export {
   verifications,
   userGenderGroupEnum,
   userRolesEnum,
-} from "./schema/auth-schema";
+} from "./auth-schema";

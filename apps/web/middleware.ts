@@ -55,11 +55,18 @@ export async function middleware(request: NextRequest) {
     }
 
     // Restrict API actions (POST, PATCH, PUT, DELETE) for unauthorized users
-    if (["POST", "PATCH", "PUT", "DELETE"].includes(request.method) && !session) {
-        return NextResponse.json(
-            { status: "error", message: "You are not authorized to perform this action" },
-            { status: 403 }
-        );
+    if (["POST", "PATCH", "PUT", "DELETE"].includes(request.method)) {
+        if(!session)
+            return NextResponse.json(
+                { status: "error", message: "You are not authorized to perform this action" },
+                { status: 403 }
+            );
+        if(request.nextUrl.pathname.includes("/admin") && session.user.role !== "admin")
+            return NextResponse.json(
+                { status: "error", message: "You are not authorized to perform this action" },
+                { status: 403 }
+            );
+
     }
 
     // API Route Handling
