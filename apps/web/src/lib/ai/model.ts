@@ -1,5 +1,10 @@
 import { createVertex } from "@ai-sdk/google-vertex/edge";
 
+import { createDeepSeek } from '@ai-sdk/deepseek';
+
+export const deepseek = createDeepSeek({
+  apiKey: process.env.DEEPSEEK_API_KEY ?? '',
+});
 
 
 export const vertex = createVertex({
@@ -10,3 +15,9 @@ export const vertex = createVertex({
     privateKey: process.env.GOOGLE_PRIVATE_KEY,
   },
 });
+
+
+export const textEmbeddingModel = vertex.textEmbeddingModel("text-embedding-004")
+
+export const chatModel = vertex("gemini-2.0-flash-001")
+// export const chatModel = deepseek('deepseek-chat')

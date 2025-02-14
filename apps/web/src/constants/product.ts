@@ -67,6 +67,9 @@ export const classificationSchema = z.object({
     occasions: z
         .array(z.string())
         .describe("An array of occasions for which the item is suitable."),
+    seasons: z
+    .array(z.string())
+    .describe("An array of seasons/weather/environment for which the item is suitable.")
     // Add more fields as necessary
 });
 

@@ -1,4 +1,6 @@
 import dbJson from "./db.json";
+import {shuffle} from "~/lib/utils"
+
 
 export type Specifications = {
   fabric?: string;
@@ -31,12 +33,37 @@ export type ProductType = rawProductType & {
   slug: string;
 };
 
-export const db: ProductType[] = (
+export const db: ProductType[] = shuffle((
   JSON.parse(JSON.stringify(dbJson)) as rawProductType[]
 ).map((product) => ({
   ...product,
   slug: product.description.toLowerCase().split(" ").join("-"),
-})).filter((product,index,array) => array.findIndex(t => (t.slug === product.slug)) === index);
+})).filter((product,index,array) => array.findIndex(t => (t.slug === product.slug)) === index).
+  .map((product) => ({
+    ...product,
+    title:product.description,
+    description:product.description,
+    brand:product.title,
+    images:product.image_urls.map((img) => ({
+        url:img,
+        alt:product.description,
+    })),
+    price:{
+        currency:"INR",
+        value:product.price
+    },
+    variants:{
+        size:[]
+    },
+    markupMetadata:{
+        sku:""
+    },
+    productUrl:product.product_url
+}))
+);
+
+
+export const convertToRequiredSchema = ()
 
 export function getProductBySlug(slug: string): Promise<ProductType | null> {
   const product = db.find((p) => p.slug === slug) || null;

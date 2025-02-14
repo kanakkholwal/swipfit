@@ -29,6 +29,10 @@ export interface RawProduct {
     colorPalette: string[];
     tags: string[];
     occasions: string[];
+    seasons: string[];
+
+    // likes: number;
+    likes: string[];
 
     // Embedding for Vector Search
     text_embeddings: number[];
@@ -37,9 +41,15 @@ export interface RawProduct {
 export interface ProductJson extends Omit<RawProduct,"text_embeddings">{
     _id:string,
     similarityScore:number,
+    // likes: number;
+    likes: string[];
+
 }
 
-export interface IProduct extends RawProduct,Document{}
+export interface IProduct extends RawProduct,Document{
+    like: (userId: string) => Promise<void>;
+    unlike: (userId: string) => Promise<void>;
+}
 
 
 // Mongoose Schema Definition
@@ -72,13 +82,55 @@ const ProductSchema = new Schema<IProduct>({
         patternCoverage: String,
     },
     dominantColor: { type: String, required: true },
-    colorPalette: { type: [String], required: true },
-    tags: { type: [String], required: true },
-    occasions: { type: [String], required: true },
+    colorPalette: { type: [String], required: true, default:[]  },
+    tags: { type: [String], required: true, default:[]  },
+    occasions: { type: [String], required: true, default:[]  },
+    seasons: { type: [String], default:[] },
+    
+    // likes: { type: Number, default: 0 }, // Stores total likes count
+    likes: { type: String, default: [] }
 
     // Embedding for Vector Search
     text_embeddings: { type: [Number], required: true, index: "2dsphere" }, // Index for vector search
 });
+
+
+
+export interface IProductLike extends Document {
+    userId:string;
+    productId:string;
+}
+
+const ProductLikeSchema = new mongoose.Schema<IProductLike>({
+    userId: { type: String, required: true },
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+}, { timestamps: true });
+
+export const ProductLike = mongoose?.models?.ProductLike || mongoose.model("ProductLike", LikeSchema);
+
+
+
+// 📌 **Instance Method: Like a Product**
+ProductSchema.methods.like = async function (userId: string) {
+    const existingLike = await ProductLike.findOne({ userId, productId: this._id });
+
+    if (!existingLike) {
+        await ProductLike.create({ userId, productId: this._id });
+        this.likes += 1;
+        await this.save();
+    }
+};
+
+// 📌 **Instance Method: Unlike a Product**
+ProductSchema.methods.unlike = async function (userId: string) {
+    const existingLike = await ProductLike.findOneAndDelete({ userId, productId: this._id });
+
+    if (existingLike) {
+        this.likes -= 1;
+        await this.save();
+    }
+};
+
 
 // Create and export the model
 const Product = mongoose?.models?.Product || model<IProduct>("Product", ProductSchema);

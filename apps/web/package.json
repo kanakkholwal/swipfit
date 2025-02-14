@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "^0.1.10",
     "@ai-sdk/google-vertex": "^2.1.12",
     "@better-fetch/fetch": "^1.1.12",
     "@hookform/resolvers": "^4.0.0",
