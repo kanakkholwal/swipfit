@@ -20,7 +20,7 @@ export default function SimilarOutfits({
             <div className="bg-[#1A1A1A] rounded-lg overflow-hidden">
               <div className="relative aspect-square">
                 <Image
-                  src={outfit.image_urls[0] || "/placeholder.svg"}
+                  src={outfit.images[0].url || "/placeholder.svg"}
                   alt={outfit.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-200"
@@ -34,7 +34,7 @@ export default function SimilarOutfits({
                 <h6 className="text-sm text-[#CCCCCC] mb-2">
                   {outfit.description}
                 </h6>
-                <p className="text-[#CCCCCC]">${outfit.price.toFixed(2)}</p>
+                <p className="text-[#CCCCCC]">${outfit.price.value.toFixed(2)}</p>
               </div>
             </div>
           </Link>
