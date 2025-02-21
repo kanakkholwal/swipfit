@@ -46,6 +46,8 @@ export type ProductType = {
   };
   productUrl: string;
   brand: string;
+  specifications: Specifications;
+
 };
 
 export const db: ProductType[] = shuffle((
@@ -73,7 +75,8 @@ export const db: ProductType[] = shuffle((
     markupMetadata:{
         sku:""
     },
-    productUrl:product.product_url
+    productUrl:product.product_url,
+    specifications:product.specifications,
 }))
 );
 
