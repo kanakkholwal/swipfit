@@ -38,7 +38,7 @@ export const db: ProductType[] = shuffle((
 ).map((product) => ({
   ...product,
   slug: product.description.toLowerCase().split(" ").join("-"),
-})).filter((product,index,array) => array.findIndex(t => (t.slug === product.slug)) === index).
+})).filter((product,index,array) => array.findIndex(t => ((t.slug === product.slug)) === index) && t.item_type !== "innerwear")
   .map((product) => ({
     ...product,
     title:product.description,
