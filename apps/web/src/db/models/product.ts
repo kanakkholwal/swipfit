@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, model } from "mongoose";
+import mongoose, { Schema, type Document, model } from "mongoose";
 
 // Interface for the Product Document
 export interface RawProduct {
@@ -88,7 +88,7 @@ const ProductSchema = new Schema<IProduct>({
     seasons: { type: [String], default:[] },
     
     // likes: { type: Number, default: 0 }, // Stores total likes count
-    likes: { type: String, default: [] }
+    likes: { type: [String], default: [] },
 
     // Embedding for Vector Search
     text_embeddings: { type: [Number], required: true, index: "2dsphere" }, // Index for vector search
@@ -103,10 +103,10 @@ export interface IProductLike extends Document {
 
 const ProductLikeSchema = new mongoose.Schema<IProductLike>({
     userId: { type: String, required: true },
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+    productId: { type: String, required: true },
 }, { timestamps: true });
 
-export const ProductLike = mongoose?.models?.ProductLike || mongoose.model("ProductLike", LikeSchema);
+export const ProductLike = mongoose?.models?.ProductLike || mongoose.model("ProductLike", ProductLikeSchema);
 
 
 

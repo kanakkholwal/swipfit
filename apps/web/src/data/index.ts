@@ -29,8 +29,23 @@ export type rawProductType = {
   specifications: Specifications;
 };
 
-export type ProductType = rawProductType & {
+export type ProductType = {
+  title: string;
+  description: string;
   slug: string;
+  images: { url: string; alt: string }[];
+  price: {
+    currency: string;
+    value: number;
+  };
+  variants: {
+    size: string[];
+  };
+  markupMetadata: {
+    sku: string;
+  };
+  productUrl: string;
+  brand: string;
 };
 
 export const db: ProductType[] = shuffle((
@@ -38,7 +53,7 @@ export const db: ProductType[] = shuffle((
 ).map((product) => ({
   ...product,
   slug: product.description.toLowerCase().split(" ").join("-"),
-})).filter((product,index,array) => array.findIndex(t => ((t.slug === product.slug)) === index) && t.item_type !== "innerwear")
+})).filter((product, index, array) => array.findIndex(t => t.slug === product.slug) === index && product.item_type !== "innerwear")
   .map((product) => ({
     ...product,
     title:product.description,
@@ -63,8 +78,9 @@ export const db: ProductType[] = shuffle((
 );
 
 
-export const convertToRequiredSchema = ()
-
+export function getProducts(): Promise<ProductType[]> {
+  return Promise.resolve(db);
+}
 export function getProductBySlug(slug: string): Promise<ProductType | null> {
   const product = db.find((p) => p.slug === slug) || null;
   return Promise.resolve(product);
