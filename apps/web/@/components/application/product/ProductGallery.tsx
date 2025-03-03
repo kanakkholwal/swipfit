@@ -2,15 +2,16 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import type {ProductType} from "~/data"
 
-export default function ProductGallery({ images }: { images: string[] }) {
+export default function ProductGallery({ images }: {images:ProductType["images"]}) {
   const [activeImage, setActiveImage] = useState(0);
 
   return (
     <div className="space-y-4">
       <div className="relative aspect-square overflow-hidden rounded-lg">
         <Image
-          src={images[activeImage] || "/placeholder.svg"}
+          src={images[activeImage].url || "/placeholder.svg"}
           alt="Product image"
           fill
           className="object-cover"
@@ -28,8 +29,8 @@ export default function ProductGallery({ images }: { images: string[] }) {
             onClick={() => setActiveImage(index)}
           >
             <Image
-              src={image || "/placeholder.svg"}
-              alt={`Product image ${index + 1}`}
+              src={image.url || "/placeholder.svg"}
+              alt={image.alt || `Product image ${index + 1}`}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 25vw, (max-width: 1200px) 15vw, 10vw"

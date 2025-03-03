@@ -1,4 +1,5 @@
 import { z } from "zod"
+import type { productSchema } from "~/constants/product"
 
 // Base validation schemas
 export const skuSchema = z.string()
@@ -6,7 +7,7 @@ export const skuSchema = z.string()
   .max(20, "SKU cannot exceed 20 characters")
   .regex(/^[a-zA-Z0-9-_]+$/, "SKU must be alphanumeric")
 
-export const productSchema = z.object({
+export const importProductSchema = z.object({
   sku: skuSchema,
   name: z.string()
     .min(3, "Product name must be at least 3 characters")
@@ -26,18 +27,9 @@ export const productSchema = z.object({
     .optional(),
 })
 
-export const importSchema = z.array(z.object({
-  sku: skuSchema,
-  name: z.string().min(3),
-  price: z.number().min(0),
-  quantity: z.number().int().min(0),
-  description: z.string().optional(),
-  category: z.string().optional(),
-  images: z.array(z.string().url()).optional(),
-}))
+export const importBulkProductSchema = z.array(importProductSchema)
 
-export type Product = z.infer<typeof productSchema>
-export type ImportProduct = z.infer<typeof importSchema>[number]
+
 
 export const SUPPORTED_IMAGE_TYPES = ["image/jpeg", "image/png"]
 export const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
@@ -55,3 +47,9 @@ export const PRODUCT_CATEGORIES = [
   "Health & Wellness",
   "Food & Beverages",
 ] as const
+
+
+export type ImportProduct = z.infer<typeof importProductSchema>
+export type ImportProductBulk = z.infer<typeof importBulkProductSchema>[number]
+
+export type ProductType = z.infer<typeof productSchema>

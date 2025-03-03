@@ -6,9 +6,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, useMotionValue } from "motion/react";
 import Image from "next/image";
 import * as React from "react";
+import type {ProductType} from "~/data"
 
 interface ImageSwiperProps extends React.HTMLAttributes<HTMLDivElement> {
-  images: string[];
+  images: ProductType["images"];
 }
 
 export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
@@ -91,16 +92,16 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
         }}
         className=" flex h-full cursor-grab items-center rounded-[inherit] active:cursor-grabbing"
       >
-        {images.map((src, imgIndex) => {
+        {images.map((image, imgIndex) => {
           return (
             <motion.div
-              key={src + imgIndex.toString()}
+              key={image.url + imgIndex.toString()}
               className="relative h-full w-full shrink-0 overflow-hidden bg-neutral-800 object-cover first:rounded-l-[inherit] last:rounded-r-[inherit]"
             >
               <Image
-                src={src}
+                src={image.url}
                 className="pointer-events-none h-full w-full object-cover"
-                alt="Image"
+                alt={image.alt || `Product image ${imgIndex + 1}`}
                 fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 unoptimized

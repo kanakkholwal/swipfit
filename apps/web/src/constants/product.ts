@@ -102,5 +102,4 @@ export const rawProductSchema = z.object({
 export const productSchema = z.object({
     ...rawProductSchema.shape,
     ...classificationSchema.shape,
-
 })

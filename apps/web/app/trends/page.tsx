@@ -36,14 +36,14 @@ export default async function TrendsPage() {
               className="break-inside-avoid-column rounded-xl overflow-hidden bg-gray-900/50 backdrop-blur-sm hover:scale-[1.02] transition-transform duration-300"
             >
               <div className="relative overflow-hidden aspect-[3/4] bg-gradient-to-t from-black/60 to-transparent">
-                {outfit.image_urls.length > 1 ? (
+                {outfit.images.length > 1 ? (
                   <ImageSwiper
-                    images={outfit.image_urls}
+                    images={outfit.images}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 ) : (
                   <Image
-                    src={outfit.image_urls[0]}
+                    src={outfit.images[0].url}
                     alt={outfit.description}
                     fill={true}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -63,14 +63,14 @@ export default async function TrendsPage() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-white">{outfit.title}</h3>
-                  <p className="font-medium text-pink-500">${outfit.price}</p>
+                  <p className="font-medium text-pink-500">${outfit.price.value.toFixed(2)}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-2 py-1 rounded-full text-xs bg-white/10 text-gray-300">
-                    {outfit.gender}
+                    {outfit.brand}
                   </span>
                   <span className="px-2 py-1 rounded-full text-xs bg-white/10 text-gray-300">
-                    {outfit.item_type}
+                    {outfit.brand}
                   </span>
                 </div>
                 <div className="flex items-center mt-3 text-sm text-gray-400">

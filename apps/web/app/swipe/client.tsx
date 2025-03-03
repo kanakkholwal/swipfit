@@ -67,15 +67,15 @@ export default function SwipePageClient({
     <div className="in-h-[calc(100vh-4rem)] max-w-md mx-auto space-y-8">
       {/* Outfit Card */}
       <Card className="relative overflow-hidden aspect-[3/4] bg-gradient-to-t from-black/60 to-transparent">
-        {currentOutfit.image_urls.length > 1 ? (
+        {currentOutfit.images.length > 1 ? (
           <ImageSwiper
-            images={currentOutfit.image_urls}
+            images={currentOutfit.images}
             key={currentIndex}
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
           <Image
-            src={currentOutfit.image_urls[0]}
+            src={currentOutfit.images[0].url}
             alt={currentOutfit.description}
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -85,7 +85,7 @@ export default function SwipePageClient({
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
           <h3 className="text-xl font-bold">{currentOutfit.title}</h3>
           <p className="text-sm opacity-90">{currentOutfit.description}</p>
-          <p className="text-lg font-semibold mt-1">{currentOutfit.price}</p>
+          <p className="text-lg font-semibold mt-1">{currentOutfit.price.value}</p>
         </div>
       </Card>
 

@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: TParams }) {
     title: `${product.title} | SwipFit`,
     description: product.description,
     openGraph: {
-      images: [{ url: product.image_urls[0] }],
+      images: [{ url: product.images[0].url }],
     },
   };
 }
@@ -51,19 +51,19 @@ export default async function ProductPage({ params }: { params: TParams }) {
         <div className="mb-4">
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
           <p className="text-[#CCCCCC]">
-            {product.description} / {product.wear_type}
+            {product.description}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Suspense fallback={<div>Loading gallery...</div>}>
-            <ProductGallery images={product.image_urls} />
+            <ProductGallery images={product.images} />
           </Suspense>
 
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold">
-                ${product.price.toFixed(2)}
+                ${product.price.value.toFixed(2)}
               </span>
               <div className="flex items-center">
                 <Star className="w-5 h-5 text-yellow-400 fill-current" />
