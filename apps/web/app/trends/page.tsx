@@ -1,8 +1,9 @@
 import { SquaresBackground } from "@/components/animated/bg-square";
-import { ImageSwiper } from "@/components/extended/image-swiper";
+import ProductImages from "@/components/application/product/Image";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
-import Image from "next/image";
+import { formatNumber } from "~/lib/utils";
+
 import { getProductsForTrends } from "~/data";
 
 export default async function TrendsPage() {
@@ -36,20 +37,7 @@ export default async function TrendsPage() {
               className="break-inside-avoid-column rounded-xl overflow-hidden bg-gray-900/50 backdrop-blur-sm hover:scale-[1.02] transition-transform duration-300"
             >
               <div className="relative overflow-hidden aspect-[3/4] bg-gradient-to-t from-black/60 to-transparent">
-                {outfit.images.length > 1 ? (
-                  <ImageSwiper
-                    images={outfit.images}
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                ) : (
-                  <Image
-                    src={outfit.images[0].url}
-                    alt={outfit.description}
-                    fill={true}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                )}
+                <ProductImages images={outfit.images} />
                 <Button
                   variant="outline"
                   size="icon"
@@ -75,7 +63,7 @@ export default async function TrendsPage() {
                 </div>
                 <div className="flex items-center mt-3 text-sm text-gray-400">
                   <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500" />
-                  {3.4}k likes
+                  {formatNumber(3500)} likes
                 </div>
               </div>
             </div>

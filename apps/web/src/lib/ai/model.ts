@@ -21,3 +21,7 @@ export const textEmbeddingModel = vertex.textEmbeddingModel("text-embedding-004"
 
 export const chatModel = vertex("gemini-2.0-flash-001")
 // export const chatModel = deepseek('deepseek-chat')
+
+export const classifyDataToObjectModel = vertex("gemini-1.5-flash")
+    // model: vertex("gemini-1.0-pro"),
+

@@ -31,8 +31,8 @@ export interface RawProduct {
     occasions: string[];
     seasons: string[];
 
-    // likes: number;
-    likes: string[];
+    likes: number;
+    // likes: string[];
 
     // Embedding for Vector Search
     text_embeddings: number[];
@@ -40,13 +40,15 @@ export interface RawProduct {
 
 export interface ProductJson extends Omit<RawProduct,"text_embeddings">{
     _id:string,
+    slug: string;
     similarityScore:number,
-    // likes: number;
-    likes: string[];
+    likes: number;
+    // likes: string[];
 
 }
 
 export interface IProduct extends RawProduct,Document{
+    slug: string;
     like: (userId: string) => Promise<void>;
     unlike: (userId: string) => Promise<void>;
 }
@@ -54,6 +56,7 @@ export interface IProduct extends RawProduct,Document{
 
 // Mongoose Schema Definition
 const ProductSchema = new Schema<IProduct>({
+    slug: { type: String, required: true, unique: true },
     images: [{ url: String, alt: String }],
     title: { type: String, required: true, minlength: 5 },
     description: { type: String, required: true, minlength: 5 },
@@ -87,8 +90,8 @@ const ProductSchema = new Schema<IProduct>({
     occasions: { type: [String], required: true, default:[]  },
     seasons: { type: [String], default:[] },
     
-    // likes: { type: Number, default: 0 }, // Stores total likes count
-    likes: { type: [String], default: [] },
+    likes: { type: Number, default: 0 }, // Stores total likes count
+    // likes: { type: [String], default: [] },
 
     // Embedding for Vector Search
     text_embeddings: { type: [Number], required: true, index: "2dsphere" }, // Index for vector search
@@ -107,6 +110,22 @@ const ProductLikeSchema = new mongoose.Schema<IProductLike>({
 }, { timestamps: true });
 
 export const ProductLike = mongoose?.models?.ProductLike || mongoose.model("ProductLike", ProductLikeSchema);
+
+
+export interface IProductSearchQuery extends Document {
+    query: string;
+    embeddings: number[];
+    product_results : string[];
+}
+
+const ProductSearchQuerySchema = new mongoose.Schema<IProductSearchQuery>({
+    query: { type: String, required: true },
+    embeddings: { type: [Number], required: true },
+    product_results: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+}, { timestamps: true });
+
+export const ProductSearchQuery = mongoose
+    ?.models?.ProductSearchQuery || mongoose.model("ProductSearchQuery", ProductSearchQuerySchema);
 
 
 

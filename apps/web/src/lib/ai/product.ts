@@ -1,5 +1,5 @@
 import { type CoreMessage, embed, generateObject } from "ai";
-import { vertex } from "./model";
+import { classifyDataToObjectModel, vertex } from "./model";
 import {classificationSchema} from "~/constants/product"
 
 export async function classifyImageToObject(imageUrls: string[]) {
@@ -21,7 +21,7 @@ export async function classifyImageToObject(imageUrls: string[]) {
   ];
 
   const result = await generateObject({
-    model: vertex("gemini-2.0-flash-001"),
+    model: classifyDataToObjectModel,
     messages: prompt,
     schema:classificationSchema,
   });

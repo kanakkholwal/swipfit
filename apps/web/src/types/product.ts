@@ -53,3 +53,5 @@ export type ImportProduct = z.infer<typeof importProductSchema>
 export type ImportProductBulk = z.infer<typeof importBulkProductSchema>[number]
 
 export type ProductType = z.infer<typeof productSchema>
+
+export type {ProductJson} from "~/db/models/product"

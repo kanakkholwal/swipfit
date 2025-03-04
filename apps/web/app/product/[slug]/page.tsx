@@ -3,11 +3,12 @@ import ProductGallery from "@/components/application/product/ProductGallery";
 import ReviewSection from "@/components/application/product/ReviewSection";
 import SimilarOutfits from "@/components/application/product/SimilarOutfits";
 import WishlistButton from "@/components/application/product/WishlistButton";
-import { ProductSpecifications } from "@/components/application/product/specifications";
+// import { ProductSpecifications } from "@/components/application/product/specifications";
 import { Star } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getProductBySlug, getSimilarOutfits } from "~/data";
+import { getProductBySlug } from "~/actions/products";
+import { getSimilarOutfits } from "~/data";
 
 async function getReviewSummary(productId: string) {
   // In a real application, this would use AI to generate a summary of reviews
@@ -35,7 +36,9 @@ export async function generateMetadata({ params }: { params: TParams }) {
 }
 
 export default async function ProductPage({ params }: { params: TParams }) {
+  console.log((await params).slug);
   const product = await getProductBySlug((await params).slug);
+  console.log(product)
   if (!product) notFound();
 
   const similarOutfits = await getSimilarOutfits(product.slug);
@@ -80,7 +83,7 @@ export default async function ProductPage({ params }: { params: TParams }) {
               <WishlistButton productId={product.slug} />
             </div>
 
-            <ProductSpecifications product={product} />
+            {/* <ProductSpecifications product={product} /> */}
           </div>
         </div>
 

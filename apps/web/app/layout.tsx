@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body
-        className={`${spaceGrotesk.variable} font-sans bg-black text-white`}
+        className={`${spaceGrotesk.variable} font-sans bg-black text-white dark:bg-black dark:text-white`}
       >
         <ClientProvider>
           <div className="flex min-h-screen flex-col">

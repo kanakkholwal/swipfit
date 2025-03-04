@@ -25,6 +25,7 @@ export default function EmptyArea({
                 "dark:bg-primary/10 dark:border-primary/20 dark:hover:border-primary/30 dark:hover:bg-primary/10",
                 "border border-dashed rounded-xl p-14 w-full max-w-[620px] hover:shadow text-center",
                 "group transition duration-500 hover:duration-200 mx-auto",
+                
                 className
             )}
             {...props}

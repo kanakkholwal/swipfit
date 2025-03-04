@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import type {ProductType} from "~/data"
+import type {ProductType} from "~/types/product"
 
 export default function ProductGallery({ images }: {images:ProductType["images"]}) {
   const [activeImage, setActiveImage] = useState(0);
