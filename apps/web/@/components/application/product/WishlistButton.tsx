@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 
@@ -15,17 +16,15 @@ export default function WishlistButton({ productId }: { productId: string }) {
   };
 
   return (
-    <button
+    <Button
       type="button"
-      className={`p-3 rounded-md border ${
-        isInWishlist
-          ? "bg-pink-500 border-pink-500"
-          : "border-gray-600 hover:border-pink-500"
-      } transition-colors duration-200`}
+      size="icon_lg"
+      variant={isInWishlist ? "gradient_pink" : "ghost"}
+      className={"rounded-md border"}
       onClick={handleToggleWishlist}
       aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
     >
       <Heart className={`w-6 h-6 ${isInWishlist ? "fill-current" : ""}`} />
-    </button>
+    </Button>
   );
 }

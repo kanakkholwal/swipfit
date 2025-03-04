@@ -167,7 +167,7 @@ export default function SearchPage() {
 
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
       <SquaresBackground
         direction="diagonal"
         speed={0.5}

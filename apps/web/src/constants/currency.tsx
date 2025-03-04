@@ -82,10 +82,10 @@ export function CurrencySymbol({ currency,className }: { currency: string,classN
         return null;
     }
 
-    const symbol = CURRENCY_SYMBOLS[currency];
-    if (typeof symbol === "string") {
-        return <span className={cn('text-inherit',className)}>{symbol}</span>;
+    const SymbolComponent = CURRENCY_SYMBOLS[currency];
+    if (typeof SymbolComponent === "string") {
+        return <span className={cn('text-inherit inline-block',className)}>{SymbolComponent}</span>;
     }
 
-    return <symbol className={cn('text-inherit',className)}/>;
+    return <SymbolComponent className={cn('text-inherit inline-block',className)}/>;
 }
