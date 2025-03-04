@@ -145,8 +145,10 @@ export async function searchProductByQuery(
 export async function getProductBySlug(slug: string): Promise<ProductJson | null> {
     try {
         await dbConnect();
-        console.log("slug",slug)
-        const product = await ProductModel.findOne({ slug }).exec();
+        console.log("slug",decodeURIComponent(slug))
+        const product = await ProductModel.findOne({ slug:decodeURIComponent(slug) })
+        .select("-text_embeddings")
+        .exec();
         console.log(product)
         return JSON.parse(JSON.stringify(product));
         }

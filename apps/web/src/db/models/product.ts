@@ -1,8 +1,8 @@
-import mongoose, { Schema, type Document, model } from "mongoose";
+import mongoose, { model, Schema, type Document } from "mongoose";
 
 // Interface for the Product Document
 export interface RawProduct {
-    images: { url: string; alt?: string }[];
+    images: Array<{ url: string; alt?: string; }>
     title: string;
     description: string;
     productUrl: string;
@@ -38,11 +38,13 @@ export interface RawProduct {
     text_embeddings: number[];
 }
 
-export interface ProductJson extends Omit<RawProduct,"text_embeddings">{
+export interface ProductJson extends Omit<RawProduct,"text_embeddings" | "images">{
     _id:string,
     slug: string;
     similarityScore:number,
     likes: number;
+    images: Array<{ url: string; alt?: string; _id:string }>
+
     // likes: string[];
 
 }

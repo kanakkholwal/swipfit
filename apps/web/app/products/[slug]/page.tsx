@@ -8,7 +8,9 @@ import { Star } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getProductBySlug } from "~/actions/products";
+import { CurrencySymbol } from "~/constants/currency";
 import { getSimilarOutfits } from "~/data";
+import { APP_NAME } from "~/project.config";
 
 async function getReviewSummary(productId: string) {
   // In a real application, this would use AI to generate a summary of reviews
@@ -27,18 +29,21 @@ export async function generateMetadata({ params }: { params: TParams }) {
   if (!product) return {};
 
   return {
-    title: `${product.title} | SwipFit`,
+    title: `${product.title} | ${APP_NAME}`,
     description: product.description,
     openGraph: {
-      images: [{ url: product.images[0].url }],
+      images: product.images.map((image) => ({
+        url: image.url,
+        alt: image.alt,
+      })),
     },
   };
 }
 
 export default async function ProductPage({ params }: { params: TParams }) {
-  console.log((await params).slug);
+
   const product = await getProductBySlug((await params).slug);
-  console.log(product)
+
   if (!product) notFound();
 
   const similarOutfits = await getSimilarOutfits(product.slug);
@@ -54,7 +59,7 @@ export default async function ProductPage({ params }: { params: TParams }) {
         <div className="mb-4">
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
           <p className="text-[#CCCCCC]">
-            {product.description}
+            {product.shortDescription}
           </p>
         </div>
 
@@ -66,7 +71,9 @@ export default async function ProductPage({ params }: { params: TParams }) {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold">
-                ${product.price.value.toFixed(2)}
+
+                <CurrencySymbol currency={product.price.currency} />
+                {product.price.value.toFixed(2)}
               </span>
               <div className="flex items-center">
                 <Star className="w-5 h-5 text-yellow-400 fill-current" />
