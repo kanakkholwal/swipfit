@@ -1,8 +1,8 @@
 import SwipePageClient from "./client";
-import { getProductsForSwipe } from "~/data";
+import { productFeed } from "~/action/products";
 
 export default async function SwipePage() {
-  const products = await getProductsForSwipe();
+  const products = await productFeed();
 
   return <SwipePageClient initialProducts={products} />;
 }
