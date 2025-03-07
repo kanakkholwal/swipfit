@@ -2,34 +2,65 @@
 import { ImageSwiper } from "@/components/extended/image-swiper";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 import { Heart, LogOut, RotateCcw, Sparkles, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import type { ProductType } from "~/data";
+import { useEffect, useState } from "react";
+import { productFeed } from "~/actions/products";
+import type { ProductJson } from "~/types/product";
 
 export default function SwipePageClient({
   initialProducts,
 }: {
-  initialProducts: ProductType[];
+  initialProducts: ProductJson[];
 }) {
+
+  const query = useQuery<ProductJson[]>({
+    queryKey: ['swipe_feed_results'],
+    queryFn: () => productFeed(),
+    initialData: initialProducts,
+    // enabled: false, // Prevents automatic query execution on mount
+  })
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeHistory, setSwipeHistory] = useState<number[]>([]);
   const [likedOutfits, setLikedOutfits] = useState<string[]>([]);
   const [superLikedOutfits, setSuperLikedOutfits] = useState<string[]>([]);
 
-  const currentOutfit = initialProducts[currentIndex];
+  const [processedProducts, setProcessedProducts] = useState<{
+    data:{
+      likedOutfits: string[];
+      superLikedOutfits: string[];
+      dislikedOutfits: string[];
+      skippedOutfits: string[];    
+    },
+    timestamp: number;
+    processed: boolean;
+  }[]>([]);
+
+  const products = query.data;
+  const currentOutfit = products[currentIndex];
 
   const handleSwipe = (direction: "left" | "right" | "super") => {
-    if (currentIndex >= initialProducts.length - 1) return;
+    if (currentIndex >= products.length - 1) return;
 
     setSwipeHistory([...swipeHistory, currentIndex]);
 
     if (direction === "right") {
-      setLikedOutfits([...likedOutfits, currentOutfit.slug]);
+      setLikedOutfits([...likedOutfits, currentOutfit._id]);
     } else if (direction === "super") {
-      setSuperLikedOutfits([...superLikedOutfits, currentOutfit.slug]);
+      setSuperLikedOutfits([...superLikedOutfits, currentOutfit._id]);
     }
+    // setProcessedProducts([...processedProducts, {
+    //   data: {
+    //     likedOutfits: likedOutfits,
+    //     superLikedOutfits: superLikedOutfits,
+    //     dislikedOutfits: [],
+    //     skippedOutfits: [],
+    //   },
+    //   timestamp: Date.now(),
+    //   processed: false,
+    // }])
 
     setCurrentIndex(currentIndex + 1);
   };
@@ -38,7 +69,7 @@ export default function SwipePageClient({
     if (swipeHistory.length === 0) return;
 
     const previousIndex = swipeHistory[swipeHistory.length - 1];
-    const previousOutfitId = initialProducts[previousIndex].slug;
+    const previousOutfitId = products[previousIndex]._id;
 
     setCurrentIndex(previousIndex);
     setSwipeHistory(swipeHistory.slice(0, -1));
@@ -48,7 +79,13 @@ export default function SwipePageClient({
     );
   };
 
-  if (currentIndex >= initialProducts.length) {
+  useEffect(() => {
+    console.log('likedOutfits:', likedOutfits);
+    console.log('superLikedOutfits:', superLikedOutfits);
+  },[likedOutfits, superLikedOutfits]);
+  
+
+  if (currentIndex >= products.length) {
     return (
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/50">
         <Card className="p-8 max-w-md text-center">
@@ -80,6 +117,8 @@ export default function SwipePageClient({
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="absolute inset-0 w-full h-full object-cover"
+            
+            priority
           />
         )}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
@@ -137,7 +176,7 @@ export default function SwipePageClient({
           className="h-14 w-14 rounded-full bg-white"
           asChild
         >
-          <Link href={`/product/${currentOutfit.slug}`}>
+          <Link href={`/products/${currentOutfit.slug}`}>
             {/* appropriate icon */}
             <LogOut className="h-6 w-6 text-emerald-500" />
           </Link>

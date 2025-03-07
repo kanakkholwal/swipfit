@@ -58,6 +58,51 @@ export async function saveProduct(product: Record<string, unknown>) {
     }
 }
 
+export async function productFeed(
+    preFilter: Record<string, string | number | boolean | string[] | number[]> = {}
+): Promise<ProductJson[]> {
+    try {
+        await dbConnect();
+
+        
+        // Search for products with similar embeddings
+        const products = await ProductModel.aggregate([
+            // { "$match": preFilter }, // Pre-filtering based on the provided conditions
+            
+            ...(preFilter ? [{ "$match": preFilter }] : []),
+            
+            {
+                "$project": {
+                    "_id": 1,
+                    "title": 1,
+                    "price": 1,
+                    "images": 1,
+                    "productUrl": 1,
+                    "slug": 1,
+                    "brand": 1,
+                    "likes": 1,
+                    "shortDescription": 1,
+                    "genderGroup": 1,
+                    "itemType": 1,
+                    "wearType": 1,
+                    "specifications": 1,
+                    "tags": 1,
+                    "occasions": 1,
+                    "dominantColor": 1,
+                    "colorPalette": 1,
+                }
+            },
+            { "$sort": { "likes": -1 } } ,// Sorting based on likes
+            { "$limit": 50 } // Limiting the number of products
+            // { "$sort": { "similarityScore": -1 } } // Sorting based on similarity score
+        ]).exec();
+        
+        return JSON.parse(JSON.stringify(products));
+    } catch (error) {
+        console.error('Error searching product:', error);
+        throw error;
+    }
+}
 
 export async function searchProductByQuery(
     query: string,
