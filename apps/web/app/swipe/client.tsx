@@ -8,6 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { productFeed } from "~/actions/products";
+import { CurrencySymbol } from "~/constants/currency";
+import { formatNumber } from "~/lib/utils";
 import type { ProductJson } from "~/types/product";
 
 export default function SwipePageClient({
@@ -28,11 +30,11 @@ export default function SwipePageClient({
   const [superLikedOutfits, setSuperLikedOutfits] = useState<string[]>([]);
 
   const [processedProducts, setProcessedProducts] = useState<{
-    data:{
+    data: {
       likedOutfits: string[];
       superLikedOutfits: string[];
       dislikedOutfits: string[];
-      skippedOutfits: string[];    
+      skippedOutfits: string[];
     },
     timestamp: number;
     processed: boolean;
@@ -82,8 +84,8 @@ export default function SwipePageClient({
   useEffect(() => {
     console.log('likedOutfits:', likedOutfits);
     console.log('superLikedOutfits:', superLikedOutfits);
-  },[likedOutfits, superLikedOutfits]);
-  
+  }, [likedOutfits, superLikedOutfits]);
+
 
   if (currentIndex >= products.length) {
     return (
@@ -117,14 +119,23 @@ export default function SwipePageClient({
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="absolute inset-0 w-full h-full object-cover"
-            
+
             priority
           />
         )}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
           <h3 className="text-xl font-bold">{currentOutfit.title}</h3>
-          <p className="text-sm opacity-90">{currentOutfit.description}</p>
-          <p className="text-lg font-semibold mt-1">{currentOutfit.price.value}</p>
+
+          <div className="flex items-center mt-3 text-sm">
+            <p className="text-gray-400 flex items-center">
+              <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500 inline-block" />
+              {formatNumber(currentOutfit.likes || 0)} likes
+            </p>
+            <div className="ml-auto font-semibold flex items-center tracking-wide">
+              <CurrencySymbol currency={currentOutfit.price.currency} className="text-sm h-3.5" />
+              {currentOutfit.price.value}
+            </div>
+          </div>
         </div>
       </Card>
 

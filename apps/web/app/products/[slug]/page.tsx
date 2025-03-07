@@ -4,6 +4,7 @@ import SimilarOutfits from "@/components/application/product/SimilarOutfits";
 import WishlistButton from "@/components/application/product/WishlistButton";
 import { ProductSpecifications } from "@/components/application/product/specifications";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -78,8 +79,21 @@ export default async function ProductPage({ params }: { params: TParams }) {
                 Liked by <span className="font-semibold">{formatNumber(product.likes)}</span> people
               </p>
             </div>
+            <div className="flex h-5 items-center space-x-4 text-sm">
+              <div>
+                {product.genderGroup}
+              </div>
+              <Separator orientation="vertical" />
+              <div>
+                {product.itemType}
+              </div>
+              <Separator orientation="vertical" />
+              <div>
+                {product.wearType}
+              </div>
+            </div>
             <div className="flex items-center justify-between">
-              <span className="text-2xl font-bold">
+              <span className="text-2xl font-bold flex items-center">
 
                 <CurrencySymbol currency={product.price.currency} className="text-2xl h-5" />
                 {product.price.value.toFixed(0)}
@@ -118,13 +132,13 @@ export default async function ProductPage({ params }: { params: TParams }) {
               </div>
             </div>
             <div className="pb-2">
-                <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
-                  Tags
-                </p>
-                <p className="text-sm dark:text-gray-100 capitalize">
-                  #{product.tags.join(", #")}
-                </p>
-              </div>
+              <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
+                Tags
+              </p>
+              <p className="text-sm dark:text-gray-100 capitalize">
+                #{product.tags.join(", #")}
+              </p>
+            </div>
             <ProductSpecifications product={product} />
           </div>
         </div>
