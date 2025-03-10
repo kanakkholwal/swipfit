@@ -14,6 +14,7 @@ const envVariables = z.object({
 
   MONGODB_URI: z.string(),
   DATABASE_URL: z.string(),
+  PINECONE_API_KEY: z.string(),
   REDIS_URL: z.string(),
 
   NODE_ENV: z.string().default("testing"),

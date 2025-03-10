@@ -22,7 +22,7 @@ export default function SwipePageClient({
     queryKey: ['swipe_feed_results'],
     queryFn: () => productFeed(),
     initialData: initialProducts,
-    // enabled: false, // Prevents automatic query execution on mount
+    enabled: false, // Prevents automatic query execution on mount
   })
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeHistory, setSwipeHistory] = useState<number[]>([]);
@@ -49,9 +49,9 @@ export default function SwipePageClient({
     setSwipeHistory([...swipeHistory, currentIndex]);
 
     if (direction === "right") {
-      setLikedOutfits([...likedOutfits, currentOutfit._id]);
+      setLikedOutfits([...likedOutfits, currentOutfit.id]);
     } else if (direction === "super") {
-      setSuperLikedOutfits([...superLikedOutfits, currentOutfit._id]);
+      setSuperLikedOutfits([...superLikedOutfits, currentOutfit.id]);
     }
     // setProcessedProducts([...processedProducts, {
     //   data: {
@@ -71,7 +71,7 @@ export default function SwipePageClient({
     if (swipeHistory.length === 0) return;
 
     const previousIndex = swipeHistory[swipeHistory.length - 1];
-    const previousOutfitId = products[previousIndex]._id;
+    const previousOutfitId = products[previousIndex].id;
 
     setCurrentIndex(previousIndex);
     setSwipeHistory(swipeHistory.slice(0, -1));
@@ -89,8 +89,8 @@ export default function SwipePageClient({
 
   if (currentIndex >= products.length) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/50">
-        <Card className="p-8 max-w-md text-center">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center ">
+        <Card className="p-8 max-w-lg text-center">
           <h2 className="text-2xl font-bold mb-4">No More Outfits</h2>
           <p className="text-muted-foreground mb-6">
             You&apos;ve seen all available outfits. Check back later for more

@@ -22,7 +22,7 @@ export default function ProductGallery({ images }: {images:ProductJson["images"]
         {images.map((image, index) => (
           <button
             type="button"
-            key={`product_image-${image._id}-${index.toString()}`}
+            key={`product_image-${image.id}-${index.toString()}`}
             className={`relative aspect-square overflow-hidden rounded-md ${
               index === activeImage ? "ring-2 ring-cyan-400" : ""
             }`}

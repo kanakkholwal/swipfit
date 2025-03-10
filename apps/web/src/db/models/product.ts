@@ -133,10 +133,10 @@ export const ProductSearchQuery = mongoose
 
 // 📌 **Instance Method: Like a Product**
 ProductSchema.methods.like = async function (userId: string) {
-    const existingLike = await ProductLike.findOne({ userId, productId: this._id });
+    const existingLike = await ProductLike.findOne({ userId, productId: this.id });
 
     if (!existingLike) {
-        await ProductLike.create({ userId, productId: this._id });
+        await ProductLike.create({ userId, productId: this.id });
         this.likes += 1;
         await this.save();
     }
@@ -144,7 +144,7 @@ ProductSchema.methods.like = async function (userId: string) {
 
 // 📌 **Instance Method: Unlike a Product**
 ProductSchema.methods.unlike = async function (userId: string) {
-    const existingLike = await ProductLike.findOneAndDelete({ userId, productId: this._id });
+    const existingLike = await ProductLike.findOneAndDelete({ userId, productId: this.id });
 
     if (existingLike) {
         this.likes -= 1;

@@ -1,17 +1,17 @@
 "use server";
 
+import { desc, eq, like } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { rawProductSchema } from "~/constants/product";
-import dbConnect from "~/db/connect.mongo";
-import ProductModel, { ProductSearchQuery } from "~/db/models/product";
-import { generateObjectEmbeddings } from "~/lib/ai/embedding";
+import { db } from "~/db/connect.pg";
+import type { ProductInsertType } from "~/db/schema/product";
+import { products } from "~/db/schema/product";
 import { classifyImageToObject } from "~/lib/ai/product";
 import { embedSearchQuery } from "~/lib/ai/search";
 import type { ProductJson } from "~/types/product";
 
 export async function saveProduct(product: Record<string, unknown>) {
     try {
-        // Validate the product
         const validationResponse = rawProductSchema.safeParse(product);
         if (!validationResponse.success) {
             console.error('Error validating product:', validationResponse.error);
@@ -20,38 +20,61 @@ export async function saveProduct(product: Record<string, unknown>) {
         const validatedProduct = validationResponse.data;
 
         const productSlug = `${validatedProduct.title.toLowerCase().replace(/ /g, '-')}-${nanoid(8)}`;
-        await dbConnect();
-        // check if [product.productUrl] already exists in the database
-        const existingProduct = await ProductModel.findOne({ productUrl: validatedProduct.productUrl });
+
+        // Check if the product already exists
+        const existingProduct = await db.query.products.findFirst({
+            where: eq(products.productUrl, validatedProduct.productUrl),
+        });
+
+        
         if (existingProduct) {
-            console.log(`Product with target: ${validatedProduct.productUrl} already exists`);
-            return Promise.resolve(JSON.parse(JSON.stringify(existingProduct)));
+            console.log(`Product with URL: ${validatedProduct.productUrl} already exists`);
+            return existingProduct;
         }
 
         const classifiedObject = await classifyImageToObject(validatedProduct.images.map((image) => image.url));
 
+        // const finalProduct = {
+        //     ...validatedProduct,
+        //     ...classifiedObject.object,
+        //     slug: productSlug,
+        //     // text_embeddings: await generateObjectEmbeddings(validatedProduct),
+        // };
         const finalProduct = {
-            ...validatedProduct,
-            ...classifiedObject.object,
-        }
-        // generate embeddings for the product
-        const productEmbeddings = await generateObjectEmbeddings(finalProduct);
-        console.log(`${productEmbeddings.length} embeddings generated for product: ${finalProduct.title}`);
-
-        // Save product to the database
-        await dbConnect();
-        const savedProduct = new ProductModel({
-            ...finalProduct,
+            id: nanoid(32),
             slug: productSlug,
-            text_embeddings: productEmbeddings,
-        });
+            images: validatedProduct.images.map((image) => ({
+                url: image.url,
+                alt: image.alt || "",
+            })),
+            productUrl: validatedProduct.productUrl,
+            price: validatedProduct.price,
+            brand: validatedProduct.brand,
+            markupMetadata: validatedProduct.markupMetadata,
+            variants: validatedProduct.variants,
+            title: classifiedObject.object.title || validatedProduct.title,
+            shortDescription: classifiedObject.object.shortDescription,
+            description: classifiedObject.object.description,
+            genderGroup: classifiedObject.object.genderGroup,
+            itemType: classifiedObject.object.itemType,
+            wearType: classifiedObject.object.wearType,
+            specifications: classifiedObject.object.specifications,
+            dominantColor: classifiedObject.object.dominantColor,
+            colorPalette: classifiedObject.object.colorPalette,
+            tags: classifiedObject.object.tags,
+            occasions: classifiedObject.object.occasions,
+            seasons: classifiedObject.object.seasons,
+            likes: 0,
 
-        await savedProduct.save();
+            // ...validatedProduct,
+            // ...classifiedObject.object,
+          } satisfies ProductInsertType;
+          
+          
 
+        const [savedProduct] = await db.insert(products).values(finalProduct).returning();
 
-        // return the product in json
-        return Promise.resolve(JSON.parse(JSON.stringify(savedProduct)));
-
+        return savedProduct;
     } catch (error) {
         console.error('Error saving product:', error);
         return Promise.reject(error);
@@ -62,142 +85,73 @@ export async function productFeed(
     preFilter: Record<string, string | number | boolean | string[] | number[]> = {}
 ): Promise<ProductJson[]> {
     try {
-        await dbConnect();
-
+        const fetchedProducts = await db.select().from(products)
+            // .where(and(...Object.entries(preFilter).map(([key, value]) => eq(products[key], value))))
+            .orderBy(desc(products.likes))
+            .limit(50);
         
-        // Search for products with similar embeddings
-        const products = await ProductModel.aggregate([
-            // { "$match": preFilter }, // Pre-filtering based on the provided conditions
-            
-            ...(preFilter ? [{ "$match": preFilter }] : []),
-            
-            {
-                "$project": {
-                    "_id": 1,
-                    "title": 1,
-                    "price": 1,
-                    "images": 1,
-                    "productUrl": 1,
-                    "slug": 1,
-                    "brand": 1,
-                    "likes": 1,
-                    "shortDescription": 1,
-                    "genderGroup": 1,
-                    "itemType": 1,
-                    "wearType": 1,
-                    "specifications": 1,
-                    "tags": 1,
-                    "occasions": 1,
-                    "dominantColor": 1,
-                    "colorPalette": 1,
-                }
-            },
-            { "$sort": { "likes": -1 } } ,// Sorting based on likes
-            { "$limit": 50 } // Limiting the number of products
-            // { "$sort": { "similarityScore": -1 } } // Sorting based on similarity score
-        ]).exec();
-        
-        return JSON.parse(JSON.stringify(products));
+        return fetchedProducts;
     } catch (error) {
-        console.error('Error searching product:', error);
+        console.error('Error fetching product feed:', error);
         throw error;
     }
 }
 
 export async function searchProductByQuery(
-    query: string,
+    query?: string,
     preFilter: Record<string, string | number | boolean | string[] | number[]> = {}
 ): Promise<ProductJson[]> {
     try {
-        await dbConnect();
-
-        if (!query.trim()) {
+        if (!query?.trim()) {
             console.log('Query is required to search product');
-            const products = await ProductModel.find(preFilter).limit(20).exec();
-            return JSON.parse(JSON.stringify(products));
-        }
-        console.log('Searching for products with query:', query);
-        const existingQuery = await ProductSearchQuery.findOne({
-            query
-        });
-        if (existingQuery) {
-            console.log(`Found existing query: ${query}`);
-            const products = await ProductModel.find({ _id: { $in: existingQuery.product_results } }).exec();
-            return JSON.parse(JSON.stringify(products));
+            return await db.select().from(products).limit(20);
         }
 
+        console.log('Searching for products with query:', query);
+
+        // const existingQuery = await db.query.productSearchQueries.findFirst({
+        //     where: eq(productSearchQueries.query, query),
+        // });
+
+        // if (existingQuery) {
+        //     console.log(`Found existing query: ${query}`);
+        //     return await db.select().from(products).where(eq(products.id, existingQuery.product_results));
+        // }
 
         const queryEmbedding = await embedSearchQuery(query.trim());
         console.log('Query embedded:', queryEmbedding.length);
 
-        // Search for products with similar embeddings
-        const products = await ProductModel.aggregate([
-            // { "$match": preFilter }, // Pre-filtering based on the provided conditions
-            {
-                "$vectorSearch": {
-                    "queryVector": queryEmbedding,
-                    "path": "text_embeddings",
-                    "numCandidates": 100,
-                    "limit": 20,
-                    "index": "products_index",
-                }
-            },
-            {
-                "$project": {
-                    "_id": 1,
-                    "title": 1,
-                    "price": 1,
-                    "images": 1,
-                    "productUrl": 1,
-                    "slug": 1,
-                    "brand": 1,
-                    "likes": 1,
-                    "shortDescription": 1,
-                    "genderGroup": 1,
-                    "itemType": 1,
-                    "wearType": 1,
-                    "specifications": 1,
-                    "tags": 1,
-                    "occasions": 1,
-                    "dominantColor": 1,
-                    "colorPalette": 1,
-                    'similarityScore': {
-                        '$meta': 'vectorSearchScore'
-                    }
-                }
-            },
-            { "$sort": { "similarityScore": -1 } } // Sorting based on similarity score
-        ]).exec();
-        if(products.length > 0){
-            const newQuery = new ProductSearchQuery({
-                query,
-                embeddings: queryEmbedding,
-                product_results: products.map((product) => product._id),
-            });
-            await newQuery.save();
-        }
+        // Perform vector search (Replace with actual implementation)
+        const matchingProducts = await db.select().from(products)
+            .where(like(products.title, `%${query}%`))
+            .orderBy(desc(products.likes))
+            .limit(20);
 
-        console.log(`Found ${products.length} products matching the query: ${query}`);
-        return JSON.parse(JSON.stringify(products));
+        // if (matchingProducts.length > 0) {
+        //     await db.insert(productSearchQueries).values({
+        //         query,
+        //         embeddings: queryEmbedding,
+        //         product_results: matchingProducts.map((product) => product.id),
+        //     });
+        // }
+
+        console.log(`Found ${matchingProducts.length} products matching the query: ${query}`);
+        return matchingProducts;
     } catch (error) {
         console.error('Error searching product:', error);
         throw error;
     }
 }
 
-
-
 export async function getProductBySlug(slug: string): Promise<ProductJson | null> {
     try {
-        await dbConnect();
-        console.log("slug",decodeURIComponent(slug))
-        const product = await ProductModel.findOne({ slug:decodeURIComponent(slug) })
-        .select("-text_embeddings")
-        .exec();
-        console.log(product)
-        return JSON.parse(JSON.stringify(product));
-        }
-    catch (error) {
+        const product = await db.query.products.findFirst({
+            where: eq(products.slug, decodeURIComponent(slug)),
+            
+        });
+
+        return Promise.resolve(product ?? null);
+    } catch (error) {
         console.error('Error getting product by slug:', error);
         throw error;
     }
