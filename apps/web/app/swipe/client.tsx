@@ -68,7 +68,7 @@ export default function SwipePageClient({
             className="absolute inset-0 w-full h-full object-cover"
             priority
           />
-          <div className="absolute bottom-0 dislike-0 like-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
             <h3 className="text-xl font-bold">
               {products[currentIndex].title}
             </h3>

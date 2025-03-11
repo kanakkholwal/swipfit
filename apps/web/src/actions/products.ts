@@ -11,6 +11,7 @@ import { generateObjectEmbeddings } from "~/lib/ai/embedding";
 import { classifyImageToObject } from "~/lib/ai/product";
 import { semanticSearch } from "~/lib/ai/search";
 import { getSession } from "~/lib/auth-server";
+import { getCollaborativeRecommendations } from "~/lib/product/recommendation";
 import type { ProductJson } from "~/types/product";
 
 export async function saveProduct(product: Record<string, unknown>) {
@@ -115,6 +116,10 @@ export async function productFeed(
   > = {},
 ): Promise<ProductJson[]> {
   try {
+    const session = await getSession();
+    if (!session) {
+      return Promise.reject("User session is required to fetch product feed");
+    }
     const fetchedProducts = await db
       .select()
       .from(products)
@@ -122,7 +127,19 @@ export async function productFeed(
       .orderBy(desc(products.likes))
       .limit(50);
 
-    return fetchedProducts;
+      const recommendations = await getCollaborativeRecommendations(session.user.id);
+      console.log("Recommendations:", recommendations);
+
+      const recommendedProducts = await db.query.products.findMany({
+        where: (fields, operators) =>
+          operators.inArray(fields.id, recommendations.map((rec) => rec.productId)),
+      });
+      if(fetchedProducts.length < 20) {
+        return recommendedProducts.concat(fetchedProducts);
+      }
+      
+
+    return recommendedProducts;
   } catch (error) {
     console.error("Error fetching product feed:", error);
     throw error;
