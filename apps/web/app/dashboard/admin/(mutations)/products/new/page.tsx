@@ -16,7 +16,7 @@ import { Fragment } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import type * as z from "zod";
 import { rawProductSchema } from "~/constants/product";
-import {saveProduct} from "~/actions/products"
+import { saveProduct } from "~/actions/products";
 
 // Infer the TypeScript type from the schema
 type RawProductFormValues = z.infer<typeof rawProductSchema>;
@@ -44,17 +44,15 @@ export default function ProductForm() {
   });
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "images"
+    name: "images",
   });
   async function onSubmit(data: RawProductFormValues) {
     console.log("Form data", data);
-    try{
-      
-    const response = await saveProduct(data)
-    console.log(response)
-
-    }catch(e){
-      console.log("errr",e)
+    try {
+      const response = await saveProduct(data);
+      console.log(response);
+    } catch (e) {
+      console.log("errr", e);
     }
   }
 
@@ -62,9 +60,7 @@ export default function ProductForm() {
     <Form {...form}>
       <div className="space-y-10 py-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">
-            Add Product
-          </h1>
+          <h1 className="text-3xl font-bold">Add Product</h1>
           <p className="text-muted-foreground">
             Fill in the details to add a new product
           </p>
@@ -100,8 +96,6 @@ export default function ProductForm() {
             )}
           />
 
-
-
           {/* Price Value */}
           <FormField
             control={form.control}
@@ -110,10 +104,7 @@ export default function ProductForm() {
               <FormItem>
                 <FormLabel>Price</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Price"
-                    {...field}
-                  />
+                  <Input placeholder="Price" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,7 +125,6 @@ export default function ProductForm() {
               </FormItem>
             )}
           />
-
 
           <FormField
             control={form.control}

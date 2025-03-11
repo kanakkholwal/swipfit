@@ -17,10 +17,9 @@ const nextConfig = {
       },
     ],
     unoptimized: true,
-    loader: 'custom',
-    loaderFile: './@/lib/image-loader.js',
-    formats: ['image/avif', 'image/webp'],
-
+    loader: "custom",
+    loaderFile: "./@/lib/image-loader.js",
+    formats: ["image/avif", "image/webp"],
   },
 };
 

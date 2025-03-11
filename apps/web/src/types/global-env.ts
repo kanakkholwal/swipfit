@@ -19,10 +19,8 @@ const envVariables = z.object({
 
   NODE_ENV: z.string().default("testing"),
 
-
   NEXT_PUBLIC_BASE_SERVER_URL: z.string().url(),
   NEXT_PUBLIC_BASE_URL: z.string(),
-
 
   // for vertex AI
   GOOGLE_CLIENT_EMAIL: z.string(),

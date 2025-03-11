@@ -1,14 +1,10 @@
 "use client";
 import { Toaster } from "@/components/ui/toaster";
-import {
-  QueryClient,
-  QueryClientProvider
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import { ThemeProvider as NextThemesProvider } from "next-themes";
 // import type { ThemeProviderProps } from "next-themes/dist/types";
 import { Next13ProgressBar } from "next13-progressbar";
 import { Toaster as HotToaster } from "react-hot-toast";
-
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,10 +14,7 @@ const queryClient = new QueryClient({
       refetchOnReconnect: false,
     },
   },
-  
-})
-
-
+});
 
 export function ClientProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -33,10 +26,7 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
         options={{ showSpinner: true, trickle: true }}
         showOnShallow={true}
       />
-      <HotToaster
-        position="top-center"
-        
-      />
+      <HotToaster position="top-center" />
       <Toaster />
     </QueryClientProvider>
   );

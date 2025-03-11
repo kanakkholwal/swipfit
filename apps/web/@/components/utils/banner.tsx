@@ -32,7 +32,7 @@ export function BannerPanel({
     <div
       className={cn(
         "bg-muted px-4 py-3 md:py-2 rounded-lg max-w-max mx-auto relative",
-        className
+        className,
       )}
     >
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 relative z-50">
@@ -42,13 +42,16 @@ export function BannerPanel({
           {description}
         </div>
         <div className="min-w-24">
-          {actionComponent ? actionComponent :
+          {actionComponent ? (
+            actionComponent
+          ) : (
             <Button
               size="sm"
               variant="outline"
               {...btnProps}
               className={cn("min-w-24", btnProps?.className)}
-            />}
+            />
+          )}
         </div>
       </div>
     </div>

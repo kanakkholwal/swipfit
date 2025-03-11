@@ -1,23 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { ProductType } from "~/data";
+import type { ProductJson } from "~/types/product";
 
 export default function SimilarOutfits({
   outfits,
 }: {
-  outfits: ProductType[];
+  outfits: ProductJson[];
 }) {
   return (
     <section className="mt-12">
       <h2 className="text-2xl font-bold mb-4">Similar Outfits</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch">
         {outfits.map((outfit) => (
           <Link
-            href={`/product/${outfit.slug}`}
+            href={`/products/${outfit.slug}`}
             key={outfit.slug}
             className="group"
           >
-            <div className="bg-[#1A1A1A] rounded-lg overflow-hidden">
+            <div className="overflow-hidden">
               <div className="relative aspect-square">
                 <Image
                   src={outfit.images[0].url || "/placeholder.svg"}
@@ -28,13 +28,12 @@ export default function SimilarOutfits({
                 />
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-lg mb-2 group-hover:text-cyan-400 transition-colors duration-200">
+                <h4 className="font-semibold text-base mb-2 group-hover:text-cyan-400 transition-colors duration-200">
                   {outfit.title}
-                </h3>
-                <h6 className="text-sm text-[#CCCCCC] mb-2">
-                  {outfit.description}
-                </h6>
-                <p className="text-[#CCCCCC]">${outfit.price.value.toFixed(2)}</p>
+                </h4>
+                <p className="text-[#CCCCCC]">
+                  ${outfit.price.value.toFixed(2)}
+                </p>
               </div>
             </div>
           </Link>

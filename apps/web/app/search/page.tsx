@@ -1,6 +1,5 @@
-
 import { SquaresBackground } from "@/components/animated/bg-square";
-import { cache } from 'react';
+import { cache } from "react";
 import { searchProductByQuery } from "~/actions/products";
 import SearchPageClient from "./client";
 
@@ -13,9 +12,11 @@ export default async function SearchPage(props: {
 }) {
   const searchParams = await props.searchParams;
   const query = searchParams?.query?.trim() || "";
-  
-  const products = await getProducts(query);
-  
+
+  const [products, filters] = await getProducts(query);
+
+  // console.log("Products: ", products);
+  console.log("Filters: ", filters);
 
   return (
     <div className="min-h-screen">
@@ -27,9 +28,8 @@ export default async function SearchPage(props: {
         hoverFillColor="#222"
         className="fixed inset-0 min-h-screen h-full w-full z-0"
       />
-      
-      <SearchPageClient initialData={products} />
 
+      <SearchPageClient initialData={products} filters={filters} />
     </div>
   );
 }

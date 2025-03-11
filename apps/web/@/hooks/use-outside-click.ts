@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export const useOutsideClick = (
   ref: React.RefObject<HTMLDivElement | null>,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  callback: (event: any) => void
+  callback: (event: any) => void,
 ) => {
   useEffect(() => {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>

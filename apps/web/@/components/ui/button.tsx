@@ -160,7 +160,7 @@ const Button = React.forwardRef<
       iconPlacement,
       ...props
     },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
     return (
@@ -174,7 +174,7 @@ const Button = React.forwardRef<
             rounded,
             width,
             effect,
-          })
+          }),
         )}
         ref={ref}
         {...props}
@@ -200,7 +200,7 @@ const Button = React.forwardRef<
           ))}
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

@@ -18,7 +18,10 @@ export const users = pgTable("users", {
   image: text("image"),
   createdAt: timestamp("createdAt").notNull(),
   updatedAt: timestamp("updatedAt").notNull(),
-  role: userRolesEnum("role").notNull().default("customer").$default(() => "customer"),
+  role: userRolesEnum("role")
+    .notNull()
+    .default("customer")
+    .$default(() => "customer"),
   genderGroup: userGenderGroupEnum("gender_group")
     .notNull()
     .default("not_specified")

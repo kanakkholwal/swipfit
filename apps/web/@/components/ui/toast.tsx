@@ -32,9 +32,9 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
-        info:"text-blue-500 bg-blue-100 border-blue-200 group",
-        success:"text-green-500 bg-green-100 border-green-200 group",
-        warning:" text-orange-500 bg-orange-100 border-orange-200 group",
+        info: "text-blue-500 bg-blue-100 border-blue-200 group",
+        success: "text-green-500 bg-green-100 border-green-200 group",
+        warning: " text-orange-500 bg-orange-100 border-orange-200 group",
       },
     },
     defaultVariants: {
@@ -120,6 +120,13 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export {
-  Toast, ToastAction, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport, type ToastActionElement, type ToastProps
+  Toast,
+  ToastAction,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+  type ToastActionElement,
+  type ToastProps,
 };
-

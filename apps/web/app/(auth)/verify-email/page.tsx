@@ -48,7 +48,7 @@ export default function VerifyEmail() {
             toast.error(res.error);
             setError(
               res?.error?.message ??
-                "An error occurred while verifying your email."
+                "An error occurred while verifying your email.",
             );
           } else {
             setVerified(true);

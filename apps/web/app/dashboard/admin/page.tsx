@@ -64,12 +64,13 @@ export default async function AdminDashboard() {
           </h4>
           <p className="text-xs text-muted-foreground">
             <span
-              className={`${userTrend === 1
-                ? "text-green-500"
-                : userTrend === -1
-                  ? "text-red-500"
-                  : "text-primary/80"
-                } text-base`}
+              className={`${
+                userTrend === 1
+                  ? "text-green-500"
+                  : userTrend === -1
+                    ? "text-red-500"
+                    : "text-primary/80"
+              } text-base`}
             >
               {userTrend === 1 ? (
                 <TrendingUp className="inline-block mr-2 size-4" />
@@ -89,14 +90,11 @@ export default async function AdminDashboard() {
           title="Active Sessions"
           Icon={<TbUsersGroup className="inline-block mr-2 size-4" />}
         >
-          <h4 className="text-3xl font-bold text-primary">
-            {activeSessions}
-          </h4>
+          <h4 className="text-3xl font-bold text-primary">{activeSessions}</h4>
           <p className="text-xs text-muted-foreground">
             Currently active sessions
           </p>
         </StatsCard>
-
 
         {/* Users by Gender Card */}
         <StatsCard
@@ -125,32 +123,29 @@ export default async function AdminDashboard() {
             ))}
           </ul>
         </StatsCard>
-
-
       </ResponsiveContainer>
-      
+
       <div>
-      <h3 className="text-xl font-semibold text-primary mb-4">
-        Quick manage
-      </h3>
+        <h3 className="text-xl font-semibold text-primary mb-4">
+          Quick manage
+        </h3>
 
-      <ResponsiveContainer className="max-w-screen-2xl">
-        {Array.isArray(admin_routes?.dashboard) ? null : admin_routes?.dashboard?.items?.map((route) => {
-          return (
-            <RouterCard
-              key={route.title}
-              href={route.path}
-              title={route.title}
-              description={route.description}
-              Icon={route.Icon}
-            />
-          );
-        })}
-
+        <ResponsiveContainer className="max-w-screen-2xl">
+          {Array.isArray(admin_routes?.dashboard)
+            ? null
+            : admin_routes?.dashboard?.items?.map((route) => {
+                return (
+                  <RouterCard
+                    key={route.title}
+                    href={route.path}
+                    title={route.title}
+                    description={route.description}
+                    Icon={route.Icon}
+                  />
+                );
+              })}
         </ResponsiveContainer>
-        </div>
-
+      </div>
     </main>
   );
 }
-

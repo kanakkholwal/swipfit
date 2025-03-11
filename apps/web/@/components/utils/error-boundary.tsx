@@ -38,7 +38,7 @@ export const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({
     return () => {
       window.removeEventListener(
         "unhandledrejection",
-        unhandledRejectionHandler
+        unhandledRejectionHandler,
       );
     };
   }, []);
@@ -61,7 +61,7 @@ interface ErrorBoundaryWithSuspenseProps {
 
 export const ErrorBoundaryWithSuspense: React.FC<
   ErrorBoundaryWithSuspenseProps
-> = ({ children, fallback, loadingFallback,callback }) => {
+> = ({ children, fallback, loadingFallback, callback }) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export const ErrorBoundaryWithSuspense: React.FC<
     return () => {
       window.removeEventListener(
         "unhandledrejection",
-        unhandledRejectionHandler
+        unhandledRejectionHandler,
       );
     };
   }, []);

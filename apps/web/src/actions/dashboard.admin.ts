@@ -35,7 +35,7 @@ export async function users_CountAndGrowth(timeInterval: string): Promise<{
       const startOfWeek = new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate() - today.getDay()
+        today.getDate() - today.getDay(),
       );
       startTime = startOfWeek;
       endTime = today; // Current week up to now
@@ -75,7 +75,7 @@ export async function users_CountAndGrowth(timeInterval: string): Promise<{
     .select({ count: sql<number>`COUNT(*)` })
     .from(users)
     .where(
-      sql`"createdAt" >= ${prevStartTime} AND "createdAt" <= ${prevEndTime}`
+      sql`"createdAt" >= ${prevStartTime} AND "createdAt" <= ${prevEndTime}`,
     );
   const periodCount = periodCountQuery[0]?.count || 0;
 
@@ -94,7 +94,6 @@ export async function users_CountAndGrowth(timeInterval: string): Promise<{
     trend: growth > 0 ? 1 : growth < 0 ? -1 : 0,
   };
 }
-
 
 // Infer the User model from the schema
 type User = InferSelectModel<typeof users>;
@@ -125,7 +124,7 @@ export async function getUser(userId: string): Promise<User | null> {
 
 export async function updateUser(
   userId: string,
-  data: Partial<User>
+  data: Partial<User>,
 ): Promise<User | null> {
   try {
     await db.update(users).set(data).where(eq(users.id, userId)).execute();
@@ -160,7 +159,6 @@ export async function getUsersByRole(): Promise<
     .execute();
   return result;
 }
-
 
 export async function getUsersByGender(): Promise<
   { gender: string; count: number }[]
@@ -334,4 +332,3 @@ export async function userEngagement(): Promise<{
     lowestEngagement: result[result.length - 1] ?? null,
   };
 }
-

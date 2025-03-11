@@ -1,6 +1,5 @@
 import dbJson from "./db.json";
-import {shuffle} from "~/lib/utils"
-
+import { shuffle } from "~/lib/utils";
 
 export type Specifications = {
   fabric?: string;
@@ -47,39 +46,42 @@ export type ProductType = {
   productUrl: string;
   brand: string;
   specifications: Specifications;
-
 };
 
-export const db: ProductType[] = shuffle((
-  JSON.parse(JSON.stringify(dbJson)) as rawProductType[]
-).map((product) => ({
-  ...product,
-  slug: product.description.toLowerCase().split(" ").join("-"),
-})).filter((product, index, array) => array.findIndex(t => t.slug === product.slug) === index && product.item_type !== "innerwear")
-  .map((product) => ({
-    ...product,
-    title:product.description,
-    description:product.description,
-    brand:product.title,
-    images:product.image_urls.map((img) => ({
-        url:img,
-        alt:product.description,
+export const db: ProductType[] = shuffle(
+  (JSON.parse(JSON.stringify(dbJson)) as rawProductType[])
+    .map((product) => ({
+      ...product,
+      slug: product.description.toLowerCase().split(" ").join("-"),
+    }))
+    .filter(
+      (product, index, array) =>
+        array.findIndex((t) => t.slug === product.slug) === index &&
+        product.item_type !== "innerwear",
+    )
+    .map((product) => ({
+      ...product,
+      title: product.description,
+      description: product.description,
+      brand: product.title,
+      images: product.image_urls.map((img) => ({
+        url: img,
+        alt: product.description,
+      })),
+      price: {
+        currency: "INR",
+        value: product.price,
+      },
+      variants: {
+        size: [],
+      },
+      markupMetadata: {
+        sku: "",
+      },
+      productUrl: product.product_url,
+      specifications: product.specifications,
     })),
-    price:{
-        currency:"INR",
-        value:product.price
-    },
-    variants:{
-        size:[]
-    },
-    markupMetadata:{
-        sku:""
-    },
-    productUrl:product.product_url,
-    specifications:product.specifications,
-}))
 );
-
 
 export function getProducts(): Promise<ProductType[]> {
   return Promise.resolve(db);

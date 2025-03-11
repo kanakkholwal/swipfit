@@ -1,7 +1,5 @@
 import mongoose, { type ConnectOptions, type Mongoose } from "mongoose";
 
-
-
 const MONGODB_URI = process.env.MONGODB_URI;
 
 declare const global: {
@@ -23,7 +21,9 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 const defaultDb =
-  process.env.NODE_ENV === "production" ? "swipfit_production" : "swipfit_testing";
+  process.env.NODE_ENV === "production"
+    ? "swipfit_production"
+    : "swipfit_testing";
 
 async function dbConnect(dbName: string = defaultDb): Promise<Mongoose> {
   if (cached.conn) {
@@ -40,7 +40,7 @@ async function dbConnect(dbName: string = defaultDb): Promise<Mongoose> {
       cached.promise = mongoose
         .connect(
           `${MONGODB_URI} + "?retryWrites=true&w=majority&appName=nith"`,
-          opts
+          opts,
         )
         .then((mongoose) => {
           console.log("Connected to MongoDB to database:", dbName);

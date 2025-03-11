@@ -1,11 +1,10 @@
 import { createVertex } from "@ai-sdk/google-vertex/edge";
 
-import { createDeepSeek } from '@ai-sdk/deepseek';
+import { createDeepSeek } from "@ai-sdk/deepseek";
 
 export const deepseek = createDeepSeek({
-  apiKey: process.env.DEEPSEEK_API_KEY ?? '',
+  apiKey: process.env.DEEPSEEK_API_KEY ?? "",
 });
-
 
 export const vertex = createVertex({
   project: process.env.GOOGLE_VERTEX_PROJECT,
@@ -16,12 +15,11 @@ export const vertex = createVertex({
   },
 });
 
+export const textEmbeddingModel =
+  vertex.textEmbeddingModel("text-embedding-004");
 
-export const textEmbeddingModel = vertex.textEmbeddingModel("text-embedding-004")
-
-export const chatModel = vertex("gemini-2.0-flash-001")
+export const chatModel = vertex("gemini-2.0-flash-001");
 // export const chatModel = deepseek('deepseek-chat')
 
-export const classifyDataToObjectModel = vertex("gemini-1.5-flash")
-    // model: vertex("gemini-1.0-pro"),
-
+export const classifyDataToObjectModel = vertex("gemini-1.5-flash");
+// model: vertex("gemini-1.0-pro"),

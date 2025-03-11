@@ -1,17 +1,18 @@
 import { pinecone, pineconeIndex, model } from "~/db/connect.pc";
-import { generateTextEmbeddings } from "./embedding";
-
-
+// import { generateTextEmbeddings } from "./embedding";
 
 export async function semanticSearch(query: string) {
-  const queryEmbedding = await pinecone.inference.embed(model,
+  const queryEmbedding = await pinecone.inference.embed(
+    model,
     query.split(`",`),
-    { inputType: 'query',  vectorType: 'dense' }
-
-  )
+    { inputType: "query", vectorType: "dense" },
+  );
 
   const result = await pineconeIndex.query({
-    vector: queryEmbedding.data[0].vectorType === 'dense' ? queryEmbedding.data[0].values : [],
+    vector:
+      queryEmbedding.data[0].vectorType === "dense"
+        ? queryEmbedding.data[0].values
+        : [],
     topK: 5,
     includeMetadata: true,
   });
@@ -22,4 +23,3 @@ export async function semanticSearch(query: string) {
     score: match.score,
   }));
 }
-

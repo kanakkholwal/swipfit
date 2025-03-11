@@ -6,7 +6,7 @@ import { useOutsideClick } from "@/hooks/use-outside-click";
 
 export function ExpandableCardDemo() {
   const [active, setActive] = useState<(typeof cards)[number] | boolean | null>(
-    null
+    null,
   );
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
@@ -105,7 +105,8 @@ export function ExpandableCardDemo() {
                     exit={{ opacity: 0 }}
                     href={active.ctaLink}
                     target="_blank"
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white" rel="noreferrer"
+                    className="px-4 py-3 text-sm rounded-full font-bold bg-green-500 text-white"
+                    rel="noreferrer"
                   >
                     {active.ctaText}
                   </motion.a>

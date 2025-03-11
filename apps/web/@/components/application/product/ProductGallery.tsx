@@ -4,7 +4,11 @@ import Image from "next/image";
 import { useState } from "react";
 import type { ProductJson } from "~/types/product";
 
-export default function ProductGallery({ images }: {images:ProductJson["images"]}) {
+export default function ProductGallery({
+  images,
+}: {
+  images: ProductJson["images"];
+}) {
   const [activeImage, setActiveImage] = useState(0);
 
   return (

@@ -9,9 +9,8 @@ import { ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getProductBySlug } from "~/actions/products";
+import { getProductBySlug, getSimilarProducts } from "~/actions/products";
 import { CurrencySymbol } from "~/constants/currency";
-import { getSimilarOutfits } from "~/data";
 import { formatNumber } from "~/lib/utils";
 import { APP_DOMAIN, APP_NAME } from "~/project.config";
 
@@ -44,13 +43,12 @@ export async function generateMetadata({ params }: { params: TParams }) {
 }
 
 export default async function ProductPage({ params }: { params: TParams }) {
-
   const product = await getProductBySlug((await params).slug);
 
   if (!product) notFound();
 
-  const similarOutfits = await getSimilarOutfits(product.slug);
-  const reviewSummary = await getReviewSummary(product.slug);
+  const similarOutfits = await getSimilarProducts((await params).slug);
+  const reviewSummary = await getReviewSummary((await params).slug);
 
   const targetUrl = new URL(product.productUrl);
   const targetHostname = targetUrl.hostname;
@@ -61,11 +59,7 @@ export default async function ProductPage({ params }: { params: TParams }) {
 
   return (
     <div className="min-h-screen">
-
-
       <main className="container mx-auto px-4 py-8 max-w-[1200px] mt-10">
-
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Suspense fallback={<div>Loading gallery...</div>}>
             <ProductGallery images={product.images} />
@@ -73,29 +67,33 @@ export default async function ProductPage({ params }: { params: TParams }) {
 
           <div className="space-y-6">
             <div className="mb-4">
-              <h2 className="text-3xl font-semibold mb-2 dark:text-gray-300">{product.brand}</h2>
-              <h3 className="text-xl font-semibold mb-2 dark:text-gray-100">{product.title}</h3>
+              <h2 className="text-3xl font-semibold mb-2 dark:text-gray-300">
+                {product.brand}
+              </h2>
+              <h3 className="text-xl font-semibold mb-2 dark:text-gray-100">
+                {product.title}
+              </h3>
               <p className="text-gray-500 dark:text-gray-300">
-                Liked by <span className="font-semibold">{formatNumber(product.likes)}</span> people
+                Liked by{" "}
+                <span className="font-semibold">
+                  {formatNumber(product.likes)}
+                </span>{" "}
+                people
               </p>
             </div>
             <div className="flex h-5 items-center space-x-4 text-sm">
-              <div>
-                {product.genderGroup}
-              </div>
+              <div>{product.genderGroup}</div>
               <Separator orientation="vertical" />
-              <div>
-                {product.itemType}
-              </div>
+              <div>{product.itemType}</div>
               <Separator orientation="vertical" />
-              <div>
-                {product.wearType}
-              </div>
+              <div>{product.wearType}</div>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold flex items-center">
-
-                <CurrencySymbol currency={product.price.currency} className="text-2xl h-5" />
+                <CurrencySymbol
+                  currency={product.price.currency}
+                  className="text-2xl h-5"
+                />
                 {product.price.value.toFixed(0)}
               </span>
               <div className="flex items-center">
@@ -111,19 +109,13 @@ export default async function ProductPage({ params }: { params: TParams }) {
             <div className="flex space-x-4 items-top">
               <WishlistButton productId={product.slug} />
               <div className="flex-1 flex flex-col">
-
-                <Button
-                  type="button"
-                  size="lg"
-                  className="flex-1"
-                  asChild
-                >
-                  <Link href={targetUrl.toString()}
+                <Button type="button" size="lg" className="flex-1" asChild>
+                  <Link
+                    href={targetUrl.toString()}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Buy now{" "}
-                    <ExternalLink />
+                    Buy now <ExternalLink />
                   </Link>
                 </Button>
                 <span className="inline-block text-[8px] italic text-gray-500 dark:text-gray-300 mt-1 ml-auto">
@@ -150,7 +142,7 @@ export default async function ProductPage({ params }: { params: TParams }) {
         <Suspense fallback={<div>Loading reviews...</div>}>
           <ReviewSection productId={product.slug} summary={reviewSummary} />
         </Suspense>
-      </main >
-    </div >
+      </main>
+    </div>
   );
 }

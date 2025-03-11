@@ -1,11 +1,14 @@
 export {
   accounts,
-  sessions, userGenderGroupEnum,
-  userRolesEnum, users,
-  verifications
+  sessions,
+  userGenderGroupEnum,
+  userRolesEnum,
+  users,
+  verifications,
 } from "./auth-schema";
 
 export {
+  products,
   // productLikes,
-  products
+  userProductPreferences,
 } from "./product";

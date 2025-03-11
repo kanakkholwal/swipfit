@@ -11,9 +11,7 @@ export function ProductSpecifications({ product }: { product: ProductJson }) {
             <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
               Brand
             </p>
-            <p className="text-gray-100 capitalize">
-              {product.brand}
-            </p>
+            <p className="text-gray-100 capitalize">{product.brand}</p>
           </div>
           <div className="border-b border-muted pb-2">
             <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
@@ -44,4 +42,3 @@ export function ProductSpecifications({ product }: { product: ProductJson }) {
     </div>
   );
 }
-

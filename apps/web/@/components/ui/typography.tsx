@@ -42,7 +42,7 @@ const paragraphVariants = cva(
   {
     variants: {},
     defaultVariants: {},
-  }
+  },
 );
 interface ParagraphProps extends React.HTMLAttributes<HTMLParagraphElement> {}
 
@@ -122,7 +122,7 @@ export const TableCell: React.FC<
     <td
       className={cn(
         "border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
-        className
+        className,
       )}
       {...props}
     >
@@ -138,7 +138,7 @@ export const TableHeadCell: React.FC<
     <th
       className={cn(
         "border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
-        className
+        className,
       )}
       {...props}
     >
