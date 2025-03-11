@@ -8,7 +8,7 @@ import { motion, useMotionValue, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { productFeed } from "~/actions/products";
+import { productFeed, updateSwipeStatus } from "~/actions/products";
 import { CurrencySymbol } from "~/constants/currency";
 import { formatNumber } from "~/lib/utils";
 import type { ProductJson } from "~/types/product";
@@ -31,11 +31,13 @@ export default function SwipePageClient({
   const opacity = useTransform(x, [-200, 0, 200], [0, 1, 0]);
   const rotate = useTransform(x, [-200, 0, 200], [-10, 0, 10]);
 
-  const handleSwipe = (direction: "left" | "right" | "super") => {
+  // TODO: Implement swipe history and undo functionality and idk I forgot
+
+  const handleSwipe = async (action: "dislike" | "like" | "super") => {
     if (currentIndex >= products.length - 1) return;
     setSwipeHistory([...swipeHistory, currentIndex]);
 
-    // updateSwipeStatus({ productId: products[currentIndex].id, action: direction });
+    await updateSwipeStatus(products[currentIndex].id,action);
     setCurrentIndex((prev) => prev + 1);
   };
 
@@ -54,8 +56,8 @@ export default function SwipePageClient({
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           onDragEnd={(e, { offset }) => {
-            if (offset.x > 100) handleSwipe("right");
-            else if (offset.x < -100) handleSwipe("left");
+            if (offset.x > 100) handleSwipe("like");
+            else if (offset.x < -100) handleSwipe("dislike");
           }}
         >
           <Image
@@ -66,7 +68,7 @@ export default function SwipePageClient({
             className="absolute inset-0 w-full h-full object-cover"
             priority
           />
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
+          <div className="absolute bottom-0 dislike-0 like-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
             <h3 className="text-xl font-bold">
               {products[currentIndex].title}
             </h3>
@@ -104,7 +106,7 @@ export default function SwipePageClient({
           size="icon_xl"
           rounded="full"
           effect="shineHover"
-          onClick={() => handleSwipe("left")}
+          onClick={() => handleSwipe("dislike")}
         >
           <X className="h-6 w-6 text-destructive" />
         </Button>
@@ -134,7 +136,7 @@ export default function SwipePageClient({
           size="icon_xl"
           rounded="full"
           effect="shineHover"
-          onClick={() => handleSwipe("right")}
+          onClick={() => handleSwipe("like")}
         >
           <Heart className="h-6 w-6 text-red-500" />
         </Button>
