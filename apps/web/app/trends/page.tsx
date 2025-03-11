@@ -2,15 +2,18 @@ import { SquaresBackground } from "@/components/animated/bg-square";
 import ProductImages from "@/components/application/product/Image";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import Link from "next/link";
 import { getProductsForTrends } from "~/actions/products";
 import { CurrencySymbol } from "~/constants/currency";
+import { getSession } from "~/lib/auth-server";
 import { formatNumber } from "~/lib/utils";
 
 
 
 
 export default async function TrendsPage() {
-  const outfits = await getProductsForTrends();
+  const session = await getSession();
+  const products = await getProductsForTrends();
 
   return (
     <div className="min-h-screen bg-black">
@@ -34,47 +37,48 @@ export default async function TrendsPage() {
       {/* Pinterest-style Grid */}
       <div className="container px-4 py-8 z-10">
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-          {outfits.map((outfit) => (
+          {products.map((product) => (
             <div
-              key={outfit.slug}
+              key={product.slug}
               className="break-inside-avoid-column rounded-xl overflow-hidden bg-gray-900/50 backdrop-blur-sm hover:scale-[1.02] transition-transform duration-300"
             >
               <div className="relative overflow-hidden aspect-[3/4] bg-gradient-to-t from-black/60 to-transparent">
-                <ProductImages images={outfit.images} />
-                <Button
+                <ProductImages images={product.images} />
+                {session?.user && (<Button
                   variant="outline"
                   size="icon"
                   className={
                     "absolute top-4 right-4 h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm border-white/20 hover:bg-black/70  text-white"
                   }
                 >
-                  <Heart className={"h-5 w-5 "} />
-                </Button>
+                  <Heart />
+                </Button>)}
               </div>
-              <div className="p-4">
+              <Link
+                      href={`/products/${product.slug}`} className="p-4 block">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-white">{outfit.title}</h3>
+                  <h3 className="font-semibold text-white">{product.title}</h3>
                   <p className="font-medium text-pink-500 inline-flex items-center">
                     <CurrencySymbol
-                      currency={outfit.price.currency}
+                      currency={product.price.currency}
                       className="text-sm h-3.5"
                     />
-                    {outfit.price.value.toFixed(0)}
+                    {product.price.value.toFixed(0)}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-2 py-1 rounded-full text-xs bg-white/10 text-gray-300">
-                    {outfit.brand}
+                    {product.brand}
                   </span>
                   <span className="px-2 py-1 rounded-full text-xs bg-white/10 text-gray-300">
-                    {outfit.occasions[0]}
+                    {product.occasions[0]}
                   </span>
                 </div>
                 <div className="flex items-center mt-3 text-sm text-gray-400">
                   <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500" />
-                  {formatNumber(outfit.likes || 0)} likes
+                  {formatNumber(product.likes || 0)} likes
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>
