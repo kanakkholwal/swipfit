@@ -3,11 +3,11 @@ import { db } from "~/data";
 
 const importedMap = new Map();
 
-const iterationLimit = 3;
+const iterationLimit = 2;
 
-const startingIndex = 100;
+const startingIndex = 103;
 
-const timeOut = 60_000;
+const timeOut = 45_000;
 
 async function processProducts() {
   try {

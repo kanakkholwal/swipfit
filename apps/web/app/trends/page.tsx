@@ -2,9 +2,12 @@ import { SquaresBackground } from "@/components/animated/bg-square";
 import ProductImages from "@/components/application/product/Image";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import { getProductsForTrends } from "~/actions/products";
+import { CurrencySymbol } from "~/constants/currency";
 import { formatNumber } from "~/lib/utils";
 
-import { getProductsForTrends } from "~/data";
+
+
 
 export default async function TrendsPage() {
   const outfits = await getProductsForTrends();
@@ -51,8 +54,12 @@ export default async function TrendsPage() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-white">{outfit.title}</h3>
-                  <p className="font-medium text-pink-500">
-                    ${outfit.price.value.toFixed(2)}
+                  <p className="font-medium text-pink-500 inline-flex items-center">
+                    <CurrencySymbol
+                      currency={outfit.price.currency}
+                      className="text-sm h-3.5"
+                    />
+                    {outfit.price.value.toFixed(0)}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -60,12 +67,12 @@ export default async function TrendsPage() {
                     {outfit.brand}
                   </span>
                   <span className="px-2 py-1 rounded-full text-xs bg-white/10 text-gray-300">
-                    {outfit.brand}
+                    {outfit.occasions[0]}
                   </span>
                 </div>
                 <div className="flex items-center mt-3 text-sm text-gray-400">
                   <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500" />
-                  {formatNumber(3500)} likes
+                  {formatNumber(outfit.likes || 0)} likes
                 </div>
               </div>
             </div>

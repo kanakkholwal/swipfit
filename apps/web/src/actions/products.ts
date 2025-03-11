@@ -3,11 +3,10 @@
 import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { rawProductSchema } from "~/constants/product";
-import { pineconeIndex } from "~/db/connect.pc";
+import { model, pinecone, pineconeIndex } from "~/db/connect.pc";
 import { db } from "~/db/connect.pg";
 import type { ProductInsertType } from "~/db/schema/product";
 import { products, userProductPreferences } from "~/db/schema/product";
-import { generateObjectEmbeddings } from "~/lib/ai/embedding";
 import { classifyImageToObject } from "~/lib/ai/product";
 import { semanticSearch } from "~/lib/ai/search";
 import { getSession } from "~/lib/auth-server";
@@ -78,8 +77,13 @@ export async function saveProduct(product: Record<string, unknown>) {
       .values(finalProduct)
       .returning();
 
-    const embeddings = await generateObjectEmbeddings(savedProduct);
-    console.log("Embeddings:", embeddings.length);
+
+    const embedding = await pinecone.inference.embed(
+      model,
+      JSON.stringify(savedProduct).split(`",`),
+      { inputType: "passage", truncate: "END", vectorType: "dense" },
+    );
+    // console.log("Embeddings:", embedding);
 
     await pineconeIndex
       .namespace(`products-${savedProduct.genderGroup}`)
@@ -98,7 +102,10 @@ export async function saveProduct(product: Record<string, unknown>) {
             occasions: savedProduct.occasions,
             seasons: savedProduct.seasons,
           },
-          values: embeddings,
+          values: Array.from(
+            embedding.data[0].vectorType === "dense"
+              ? embedding.data[0].values
+              : []),
         },
       ]);
 
@@ -127,21 +134,35 @@ export async function productFeed(
       .orderBy(desc(products.likes))
       .limit(50);
 
-      const recommendations = await getCollaborativeRecommendations(session.user.id);
-      console.log("Recommendations:", recommendations);
+    const recommendations = await getCollaborativeRecommendations(session.user.id);
+    console.log("Recommendations:", recommendations);
 
-      const recommendedProducts = await db.query.products.findMany({
-        where: (fields, operators) =>
-          operators.inArray(fields.id, recommendations.map((rec) => rec.productId)),
-      });
-      if(fetchedProducts.length < 20) {
-        return recommendedProducts.concat(fetchedProducts);
-      }
-      
+    const recommendedProducts = await db.query.products.findMany({
+      where: (fields, operators) =>
+        operators.inArray(fields.id, recommendations.map((rec) => rec.productId)),
+    });
+    if (recommendedProducts.length < 20) {
+      return recommendedProducts.concat(fetchedProducts);
+    }
+
 
     return recommendedProducts;
   } catch (error) {
     console.error("Error fetching product feed:", error);
+    throw error;
+  }
+}
+
+export async function getProductsForTrends(): Promise<ProductJson[]> {
+  try{
+    const trendingProducts = await db.query.products.findMany({
+      orderBy: (products, { asc }) => [asc(products.id)],
+      limit: 100,
+    });
+
+    return trendingProducts;
+  }catch(error){
+    console.error("Error fetching trending products:", error);
     throw error;
   }
 }
@@ -362,3 +383,5 @@ export async function getSimilarProducts(slug: string): Promise<ProductJson[]> {
     throw error;
   }
 }
+
+
