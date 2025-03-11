@@ -1,12 +1,25 @@
-import { embed } from "ai";
-import { vertex } from "./model";
+import { pinecone, pineconeIndex, model } from "~/db/connect.pc";
+import { generateTextEmbeddings } from "./embedding";
 
-// embed search query and get the results
-export async function embedSearchQuery(query: string) {
-  const { embedding } = await embed({
-    model: vertex.textEmbeddingModel("text-embedding-004"),
-    value: query,
-    maxRetries: 1,
+
+
+export async function semanticSearch(query: string) {
+  const queryEmbedding = await pinecone.inference.embed(model,
+    query.split(`",`),
+    { inputType: 'query',  vectorType: 'dense' }
+
+  )
+
+  const result = await pineconeIndex.query({
+    vector: queryEmbedding.data[0].vectorType === 'dense' ? queryEmbedding.data[0].values : [],
+    topK: 5,
+    includeMetadata: true,
   });
-  return embedding;
+
+  return result.matches.map((match) => ({
+    id: match.id,
+    metadata: match.metadata,
+    score: match.score,
+  }));
 }
+

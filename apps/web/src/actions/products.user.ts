@@ -1,14 +1,8 @@
 "use server";
 
-import { desc, eq, like } from "drizzle-orm";
-import { nanoid } from "nanoid";
-import { rawProductSchema } from "~/constants/product";
+import { eq } from "drizzle-orm";
 import { db } from "~/db/connect.pg";
-import type { ProductInsertType } from "~/db/schema/product";
 import { products } from "~/db/schema/product";
-import { classifyImageToObject } from "~/lib/ai/product";
-import { embedSearchQuery } from "~/lib/ai/search";
-import type { ProductJson } from "~/types/product";
 
 
 export async function actionOnProduct(id:string,action:string){

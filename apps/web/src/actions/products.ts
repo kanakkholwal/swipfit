@@ -3,11 +3,13 @@
 import { desc, eq, like } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { rawProductSchema } from "~/constants/product";
+import { pineconeIndex } from "~/db/connect.pc";
 import { db } from "~/db/connect.pg";
 import type { ProductInsertType } from "~/db/schema/product";
 import { products } from "~/db/schema/product";
+import { generateObjectEmbeddings } from "~/lib/ai/embedding";
 import { classifyImageToObject } from "~/lib/ai/product";
-import { embedSearchQuery } from "~/lib/ai/search";
+import { semanticSearch } from "~/lib/ai/search";
 import type { ProductJson } from "~/types/product";
 
 export async function saveProduct(product: Record<string, unknown>) {
@@ -26,7 +28,7 @@ export async function saveProduct(product: Record<string, unknown>) {
             where: eq(products.productUrl, validatedProduct.productUrl),
         });
 
-        
+
         if (existingProduct) {
             console.log(`Product with URL: ${validatedProduct.productUrl} already exists`);
             return existingProduct;
@@ -34,12 +36,8 @@ export async function saveProduct(product: Record<string, unknown>) {
 
         const classifiedObject = await classifyImageToObject(validatedProduct.images.map((image) => image.url));
 
-        // const finalProduct = {
-        //     ...validatedProduct,
-        //     ...classifiedObject.object,
-        //     slug: productSlug,
-        //     // text_embeddings: await generateObjectEmbeddings(validatedProduct),
-        // };
+
+
         const finalProduct = {
             id: nanoid(32),
             slug: productSlug,
@@ -68,11 +66,33 @@ export async function saveProduct(product: Record<string, unknown>) {
 
             // ...validatedProduct,
             // ...classifiedObject.object,
-          } satisfies ProductInsertType;
-          
-          
+        } satisfies ProductInsertType;
+
+        // Save the product
 
         const [savedProduct] = await db.insert(products).values(finalProduct).returning();
+
+        const embeddings = await generateObjectEmbeddings(savedProduct);
+        console.log('Embeddings:', embeddings.length);
+
+        await pineconeIndex.namespace(`products-${savedProduct.genderGroup}`).upsert([
+            {
+                id: savedProduct.id,
+                metadata: {
+                    title: savedProduct.title,
+                    description: savedProduct.shortDescription,
+                    slug: savedProduct.slug,
+                    genderGroup: savedProduct.genderGroup,
+                    itemType: savedProduct.itemType,
+                    wearType: savedProduct.wearType,
+                    dominantColor: savedProduct.dominantColor,
+                    colorPalette: savedProduct.colorPalette,
+                    occasions: savedProduct.occasions,
+                    seasons: savedProduct.seasons,
+                },
+                values: embeddings,
+            },
+        ])
 
         return savedProduct;
     } catch (error) {
@@ -89,7 +109,7 @@ export async function productFeed(
             // .where(and(...Object.entries(preFilter).map(([key, value]) => eq(products[key], value))))
             .orderBy(desc(products.likes))
             .limit(50);
-        
+
         return fetchedProducts;
     } catch (error) {
         console.error('Error fetching product feed:', error);
@@ -109,31 +129,28 @@ export async function searchProductByQuery(
 
         console.log('Searching for products with query:', query);
 
-        // const existingQuery = await db.query.productSearchQueries.findFirst({
-        //     where: eq(productSearchQueries.query, query),
-        // });
+        
+        const queryResponse = await semanticSearch(query);
 
-        // if (existingQuery) {
-        //     console.log(`Found existing query: ${query}`);
-        //     return await db.select().from(products).where(eq(products.id, existingQuery.product_results));
-        // }
-
-        const queryEmbedding = await embedSearchQuery(query.trim());
-        console.log('Query embedded:', queryEmbedding.length);
-
+        // Perform vector search
+        const matchingProducts = await db.query.products.findMany({
+            where: (fields, operators) => (
+                operators.or(
+                    ...queryResponse.map((match) => operators.eq(fields.id, match.id))
+                )
+            ),
+            orderBy(fields, operators) {
+                return operators.desc(fields.likes);
+            },
+            limit: 20,
+        });
         // Perform vector search (Replace with actual implementation)
-        const matchingProducts = await db.select().from(products)
-            .where(like(products.title, `%${query}%`))
-            .orderBy(desc(products.likes))
-            .limit(20);
+        // const matchingProducts = await db.select().from(products)
+        //     .where(like(products.title, `%${query}%`))
+        //     .orderBy(desc(products.likes))
+        //     .limit(20);
 
-        // if (matchingProducts.length > 0) {
-        //     await db.insert(productSearchQueries).values({
-        //         query,
-        //         embeddings: queryEmbedding,
-        //         product_results: matchingProducts.map((product) => product.id),
-        //     });
-        // }
+
 
         console.log(`Found ${matchingProducts.length} products matching the query: ${query}`);
         return matchingProducts;
@@ -147,7 +164,7 @@ export async function getProductBySlug(slug: string): Promise<ProductJson | null
     try {
         const product = await db.query.products.findFirst({
             where: eq(products.slug, decodeURIComponent(slug)),
-            
+
         });
 
         return Promise.resolve(product ?? null);
