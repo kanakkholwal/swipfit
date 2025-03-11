@@ -19,8 +19,8 @@ export default function WishlistButton({ productId }: { productId: string }) {
     <Button
       type="button"
       size="icon_lg"
-      variant={isInWishlist ? "gradient_pink" : "ghost"}
-      className={"rounded-md border"}
+      variant={isInWishlist ? "gradient_pink" : "outline"}
+      effect="shineHover"
       onClick={handleToggleWishlist}
       aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
     >

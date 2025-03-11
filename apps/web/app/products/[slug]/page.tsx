@@ -67,13 +67,13 @@ export default async function ProductPage({ params }: { params: TParams }) {
 
           <div className="space-y-6">
             <div className="mb-4">
-              <h2 className="text-3xl font-semibold mb-2 dark:text-gray-300">
+              <h2 className="text-2xl font-semibold mb-2 dark:text-gray-300 italic">
                 {product.brand}
               </h2>
               <h3 className="text-xl font-semibold mb-2 dark:text-gray-100">
                 {product.title}
               </h3>
-              <p className="text-gray-500 dark:text-gray-300">
+              <p className="text-gray-500 dark:text-gray-300 text-sm">
                 Liked by{" "}
                 <span className="font-semibold">
                   {formatNumber(product.likes)}
@@ -86,7 +86,7 @@ export default async function ProductPage({ params }: { params: TParams }) {
               <Separator orientation="vertical" />
               <div>{product.itemType}</div>
               <Separator orientation="vertical" />
-              <div>{product.wearType}</div>
+              <div>{product.occasions[0]}</div>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold flex items-center">
@@ -107,9 +107,9 @@ export default async function ProductPage({ params }: { params: TParams }) {
             <SizeSelector sizes={product.sizes} /> */}
 
             <div className="flex space-x-4 items-top">
-              <WishlistButton productId={product.slug} />
+              <WishlistButton productId={product.id} />
               <div className="flex-1 flex flex-col">
-                <Button type="button" size="lg" className="flex-1" asChild>
+                <Button type="button" size="lg" effect="shineHover" className="flex-1" asChild>
                   <Link
                     href={targetUrl.toString()}
                     target="_blank"
