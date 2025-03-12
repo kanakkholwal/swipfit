@@ -34,7 +34,7 @@ export default function SwipePageClient({
 
   // TODO: Implement swipe history and undo functionality and idk I forgot
 
-  const handleSwipe = async (action: "dislike" | "like" | "super") => {
+  const handleSwipe = async (action: "dislike" | "like" | "super_like") => {
     if (currentIndex >= products.length - 1) return;
     setSwipeHistory([...swipeHistory, currentIndex]);
 
@@ -124,7 +124,7 @@ export default function SwipePageClient({
             effect="shineHover"
             size="icon_xl"
             rounded="full"
-            onClick={() => handleSwipe("super")}
+            onClick={() => handleSwipe("super_like")}
           >
             <Sparkles className="h-6 w-6 text-yellow-500" />
           </Button>
