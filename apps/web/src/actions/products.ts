@@ -12,6 +12,7 @@ import { semanticSearch } from "~/lib/ai/search";
 import { getSession } from "~/lib/auth-server";
 import { getCollaborativeRecommendations } from "~/lib/product/recommendation";
 import type { ProductJson } from "~/types/product";
+import { handleSuperLike } from "./lists";
 
 export async function saveProduct(product: Record<string, unknown>) {
   try {
@@ -154,14 +155,14 @@ export async function productFeed(
 }
 
 export async function getProductsForTrends(): Promise<ProductJson[]> {
-  try{
+  try {
     const trendingProducts = await db.query.products.findMany({
       orderBy: (products, { asc }) => [asc(products.id)],
       limit: 100,
     });
 
     return trendingProducts;
-  }catch(error){
+  } catch (error) {
     console.error("Error fetching trending products:", error);
     throw error;
   }
@@ -169,7 +170,7 @@ export async function getProductsForTrends(): Promise<ProductJson[]> {
 
 export async function updateSwipeStatus(
   productId: string,
-  action: "like" | "dislike" | "super",
+  action: "like" | "dislike" | "super_like",
 ) {
   try {
     const session = await getSession();
@@ -202,13 +203,16 @@ export async function updateSwipeStatus(
         return Promise.resolve(true);
       }
 
-      if (action === "like") {
+      if (action === "like" || action === "super_like") {
         await txDb
           .update(products)
           .set({
             likes: product.likes + 1,
           })
           .where(eq(products.id, productId));
+        if (action === "super_like") {
+          await handleSuperLike(productId);
+        }
       }
 
       await txDb.insert(userProductPreferences).values({

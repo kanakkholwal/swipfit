@@ -9,6 +9,7 @@ import {
   getActiveSessions,
   getUsersByGender,
   getUsersByRole,
+  product_CountAndGrowth,
   users_CountAndGrowth,
 } from "~/actions/dashboard.admin";
 
@@ -18,7 +19,13 @@ export default async function AdminDashboard() {
     growthPercent: userGrowth,
     growth,
     trend: userTrend,
-  } = await users_CountAndGrowth("last_week");
+  } = await users_CountAndGrowth("last_month");
+  const {
+    total: totalProducts,
+    growthPercent: productGrowthPercent,
+    growth: productGrowth,
+    trend: productTrend,
+  } = await product_CountAndGrowth("last_month");
 
   const usersByGender = await getUsersByGender();
   const usersByRole = await getUsersByRole();
@@ -36,6 +43,54 @@ export default async function AdminDashboard() {
       <ResponsiveContainer className="max-w-screen-2xl">
         {/* Total Users Card */}
 
+        <StatsCard
+          title="Total Products"
+          Icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <title>Products</title>
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          }
+        >
+          <h4 className="text-3xl font-bold text-primary">
+            {totalProducts}
+            <span className="text-sm text-muted-foreground">
+              /{productTrend * productGrowth}
+            </span>
+          </h4>
+          <p className="text-xs text-muted-foreground">
+            <span
+              className={`${
+                productTrend === 1
+                  ? "text-green-500"
+                  : userTrend === -1
+                    ? "text-red-500"
+                    : "text-primary/80"
+              } text-base`}
+            >
+              {productTrend === 1 ? (
+                <TrendingUp className="inline-block mr-2 size-4" />
+              ) : userTrend === -1 ? (
+                <TrendingDown className="inline-block mr-2 size-4" />
+              ) : (
+                <CircleDashed className="inline-block mr-2 size-4" />
+              )}
+              {productGrowth?.toFixed(2)}%
+            </span>{" "}
+            from last month
+          </p>
+        </StatsCard>
         <StatsCard
           title="Total Users"
           Icon={

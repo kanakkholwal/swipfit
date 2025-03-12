@@ -2,7 +2,7 @@
 import type { InferSelectModel } from "drizzle-orm";
 import { asc, desc, eq, sql } from "drizzle-orm";
 import { db } from "~/db/connect.pg";
-import { accounts, sessions, users } from "~/db/schema/auth-schema";
+import { accounts, sessions, users,products } from "~/db/schema";
 
 export async function users_CountAndGrowth(timeInterval: string): Promise<{
   count: number;
@@ -330,5 +330,99 @@ export async function userEngagement(): Promise<{
   return {
     highestEngagement: result[0] ?? null,
     lowestEngagement: result[result.length - 1] ?? null,
+  };
+}
+
+
+
+
+export async function product_CountAndGrowth(timeInterval: string): Promise<{
+  count: number;
+  total: number;
+  growth: number;
+  growthPercent: number;
+  trend: -1 | 1 | 0;
+}> {
+  let startTime: Date;
+  let endTime: Date | null = null; // Used for the current partial interval
+  let prevStartTime: Date;
+  let prevEndTime: Date;
+
+  // Determine the start and previous intervals based on the time interval
+  switch (timeInterval) {
+    case "last_hour": {
+      startTime = new Date(Date.now() - 60 * 60 * 1000);
+      prevStartTime = new Date(startTime.getTime() - 60 * 60 * 1000);
+      prevEndTime = startTime;
+      break;
+    }
+    case "last_24_hours": {
+      startTime = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      prevStartTime = new Date(startTime.getTime() - 24 * 60 * 60 * 1000);
+      prevEndTime = startTime;
+      break;
+    }
+    case "last_week": {
+      const today = new Date();
+      const startOfWeek = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - today.getDay(),
+      );
+      startTime = startOfWeek;
+      endTime = today; // Current week up to now
+      prevStartTime = new Date(startTime.getTime() - 7 * 24 * 60 * 60 * 1000);
+      prevEndTime = startTime;
+      break;
+    }
+    case "last_month": {
+      const today = new Date();
+      startTime = new Date(today.getFullYear(), today.getMonth(), 1); // Start of this month
+      endTime = today; // Current month up to now
+      prevStartTime = new Date(today.getFullYear(), today.getMonth() - 1, 1); // Start of last month
+      prevEndTime = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of last month
+      break;
+    }
+    case "last_year": {
+      const today = new Date();
+      startTime = new Date(today.getFullYear(), 0, 1); // Start of this year
+      endTime = today; // Current year up to now
+      prevStartTime = new Date(today.getFullYear() - 1, 0, 1); // Start of last year
+      prevEndTime = new Date(today.getFullYear() - 1, 11, 31); // Last day of last year
+      break;
+    }
+    default:
+      throw new Error("Invalid time interval provided");
+  }
+
+  // Fetch the total products count
+  const totalProducts = await db
+    .select({ count: sql<number>`COUNT(*)` })
+    .from(products)
+    .execute();
+  const total = totalProducts[0]?.count ?? 0;
+
+  // Fetch the count of products in the previous interval
+  const periodCountQuery = await db
+    .select({ count: sql<number>`COUNT(*)` })
+    .from(products)
+    .where(
+      sql`"createdAt" >= ${prevStartTime} AND "createdAt" <= ${prevEndTime}`,
+    );
+  const periodCount = periodCountQuery[0]?.count || 0;
+
+  // Calculate growth and growth percentage
+  const growth = total - periodCount;
+  const growthPercent =
+    periodCount === 0
+      ? 100
+      : (growth / (periodCount === 0 ? 1 : periodCount)) * 100;
+
+  return {
+    count: total,
+    total,
+    growth,
+    growthPercent,
+    trend: growth > 0 ? 1 : growth < 0 ? -1 : 0,
   };
 }

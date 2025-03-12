@@ -18,8 +18,8 @@ export const vertex = createVertex({
 export const textEmbeddingModel =
   vertex.textEmbeddingModel("text-embedding-004");
 
-export const chatModel = vertex("gemini-2.0-flash-001");
+export const chatModel = vertex("gemini-2.0-flash-lite-preview-02-05");
 // export const chatModel = deepseek('deepseek-chat')
 
-export const classifyDataToObjectModel = vertex("gemini-1.5-flash");
+export const classifyDataToObjectModel = vertex("gemini-2.0-flash-lite-preview-02-05");
 // model: vertex("gemini-1.0-pro"),

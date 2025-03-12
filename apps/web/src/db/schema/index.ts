@@ -4,11 +4,14 @@ export {
   userGenderGroupEnum,
   userRolesEnum,
   users,
-  verifications,
+  verifications
 } from "./auth-schema";
 
 export {
   products,
   // productLikes,
-  userProductPreferences,
+  userProductPreferences
 } from "./product";
+
+
+export * from "./list";

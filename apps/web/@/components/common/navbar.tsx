@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Heart, Search, Shirt, TrendingUp, User } from "lucide-react";
+import { Heart, List, Search, Shirt, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -49,7 +49,18 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {session?.user ? (
+            {session?.user ? (<>
+              {/* <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-400 hover:text-white"
+                asChild
+              >
+                <Link href="/profile/list">
+                  <List />
+                  List
+                </Link>
+              </Button> */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -61,7 +72,7 @@ export default function Navbar() {
                   Profile
                 </Link>
               </Button>
-            ) : (
+            </>) : (
               <>
                 <Button
                   variant="ghost"
