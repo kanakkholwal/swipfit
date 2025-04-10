@@ -5,7 +5,7 @@ const importedMap = new Map();
 
 const iterationLimit = 12;
 
-const startingIndex = 210;
+const startingIndex = 310;
 
 const timeOut = 60_000;
 
