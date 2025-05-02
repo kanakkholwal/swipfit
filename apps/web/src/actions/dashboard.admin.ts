@@ -406,9 +406,9 @@ export async function product_CountAndGrowth(timeInterval: string): Promise<{
   const periodCountQuery = await db
     .select({ count: sql<number>`COUNT(*)` })
     .from(products)
-    .where(
-      sql`"createdAt" >= ${prevStartTime} AND "createdAt" <= ${prevEndTime}`,
-    );
+    // .where(
+    //   sql`"createdAt" >= ${prevStartTime} AND "createdAt" <= ${prevEndTime}`,
+    // );
   const periodCount = periodCountQuery[0]?.count || 0;
 
   // Calculate growth and growth percentage

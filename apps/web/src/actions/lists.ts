@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "~/db/connect.pg"; // Import Drizzle instance
-import { listItems, lists } from "~/db/schema";
+import { listItems, lists } from "~/db/schema/list";
 import { getSession } from "~/lib/auth-server";
 
 export async function handleSuperLike(productId: string) {
