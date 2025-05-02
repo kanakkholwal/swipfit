@@ -5,9 +5,9 @@ import {
   pgTable,
   primaryKey,
   text,
+  timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { timestamp } from "drizzle-orm/pg-core";
 import { users } from ".";
 
 export const products = pgTable("products", {
@@ -59,6 +59,10 @@ export const products = pgTable("products", {
   seasons: text("seasons").array().notNull().default([]),
 
   likes: integer("likes").notNull().default(0),
+
+
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow().$onUpdateFn(() => new Date()),
 });
 
 export const userProductPreferences = pgTable(
@@ -88,6 +92,8 @@ export const userProductPreferences = pgTable(
 //     productResults: jsonb("product_results").notNull().default([]),
 //     createdAt: timestamp("created_at").default(sql`now()`),
 // });
+
+
 
 export type ProductInsertType = InferInsertModel<typeof products>;
 export type ProductSelectType = InferSelectModel<typeof products>;

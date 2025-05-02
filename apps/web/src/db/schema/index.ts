@@ -14,4 +14,7 @@ export {
 } from "./product";
 
 
-export * from "./list";
+// export {
+//   listItems, listItemsRelations
+// } from "./list";
+

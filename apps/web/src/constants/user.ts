@@ -13,5 +13,5 @@ export const USER_ROLES = {
   ADMIN: "admin",
 } as const;
 
-export const USER_GENDER_GROUPS_ENUMS = Object.values(USER_GENDER_GROUPS);
+export const USER_GENDER_GROUPS_ENUMS = Object.values(USER_GENDER_GROUPS)
 export const USER_ROLES_ENUMS = Object.values(USER_ROLES);

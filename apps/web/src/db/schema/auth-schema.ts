@@ -1,13 +1,12 @@
 import { boolean, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { USER_GENDER_GROUPS_ENUMS, USER_ROLES_ENUMS } from "~/constants/user";
 
 export const userGenderGroupEnum = pgEnum("user_gender_group_enum", [
-  ...USER_GENDER_GROUPS_ENUMS,
-] as [string, ...string[]]);
+  "men" , "women" , "boy" , "girl" , "not_specified"
+]);
 
 export const userRolesEnum = pgEnum("user_roles_enum", [
-  ...USER_ROLES_ENUMS,
-] as [string, ...string[]]);
+  "admin" , "brand" ,"influencer" , "customer"
+]);
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
