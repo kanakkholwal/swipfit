@@ -1,9 +1,9 @@
+"use client";
 import { Slot, Slottable } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-
 const rainbowVariant = cn(
   "group relative animate-rainbow  border-0 bg-[length:200%] px-8 py-2 font-medium text-primary-foreground transition-colors [background-clip:padding-box,border-box,border-box] [background-origin:border-box] [border:calc(0.08*1rem)_solid_transparent] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
 
@@ -17,11 +17,11 @@ const rainbowVariant = cn(
   "dark:bg-[linear-gradient(#fff,#fff),linear-gradient(#fff_50%,rgba(255,255,255,0.6)_80%,rgba(0,0,0,0)),linear-gradient(90deg,hsl(var(--color-1)),hsl(var(--color-5)),hsl(var(--color-3)),hsl(var(--color-4)),hsl(var(--color-2)))]",
 );
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap capitalize rounded-md text-sm font-semibold tracking-wide ring-offset-background transition-transform transition-duration-600 transition transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap capitalize rounded-md text-sm font-medium tracking-wide ring-offset-background transition-transform transition-duration-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-primary dark:bg-primary text-white hover:bg-primary/90",
         default_light:
           "bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/10 dark:text-primary hover:dark:bg-primary/5 hover:dark:text-primary",
         success_light:
@@ -32,14 +32,16 @@ const buttonVariants = cva(
           "bg-red-600/10 text-red-600 hover:bg-red-600/20 dark:bg-red-600/5 dark:text-red-600 hover:dark:bg-red-600/10 hover:dark:text-red-600",
         destructive:
           "bg-red-100 hover:bg-red-200 text-red-700	dark:bg-red-700 dark:text-red-200 dark:hover:bg-red-800 dark:hover:text-red-200",
-
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+          "border border-input bg-background shadow-sm hover:bg-accent",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+        ghost:
+          "bg-slate-100/20 hover:bg-slate-100/80 backdrop-blur-md border border-gray-100/80 hover:text-accent-foreground dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white",
         success:
           "bg-green-100 text-green-700 hover:bg-green-200 hover:text-green-700",
-        ghost: "text-gray-400 hover:bg-accent hover:text-accent-foreground",
+        slate:
+          "bg-slate-200 hover:bg-slate-300 text-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-950 dark:hover:text-slate-100",
         link: "text-primary underline-offset-4 hover:underline",
         dark: "bg-slate-900 text-white hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-200",
         light:
@@ -88,9 +90,9 @@ const buttonVariants = cva(
         shineHover:
           "relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] hover:before:bg-[position:-100%_0,0_0] before:duration-1000",
         gooeyRight:
-          "relative z-0 overflow-hidden transition-all duration-500 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:bg-gradient-to-r from-white/40 before:transition-transform before:duration-1000  hover:before:translate-x-[0%] hover:before:translate-y-[0%]",
+          "relative z-0 overflow-hidden transition-all duration-600 before:absolute before:inset-0 before:-z-10 before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5] before:rounded-[100%] before:bg-gradient-to-r from-white/40 before:transition-transform before:duration-1000  hover:before:translate-x-[0%] hover:before:translate-y-[0%]",
         gooeyLeft:
-          "relative z-0 overflow-hidden transition-all duration-500 after:absolute after:inset-0 after:-z-10 after:translate-x-[-150%] after:translate-y-[150%] after:scale-[2.5] after:rounded-[100%] after:bg-gradient-to-l from-white/40 after:transition-transform after:duration-1000  hover:after:translate-x-[0%] hover:after:translate-y-[0%]",
+          "relative z-0 overflow-hidden transition-all duration-600 after:absolute after:inset-0 after:-z-10 after:translate-x-[-150%] after:translate-y-[150%] after:scale-[2.5] after:rounded-[100%] after:bg-gradient-to-l from-white/40 after:transition-transform after:duration-1000  hover:after:translate-x-[0%] hover:after:translate-y-[0%]",
         underline:
           "relative !no-underline after:absolute after:bg-primary after:bottom-2 after:h-[1px] after:w-2/3 after:origin-bottom-left after:scale-x-100 hover:after:origin-bottom-right hover:after:scale-x-0 after:transition-transform after:ease-in-out after:duration-300",
         hoverUnderline:
@@ -107,6 +109,9 @@ const buttonVariants = cva(
       rounded: {
         default: "rounded-md",
         full: "rounded-full",
+        lg: "rounded-lg",
+        xl: "rounded-xl",
+        sm: "rounded-sm",
         none: "rounded-none",
       },
       transition: {
@@ -120,9 +125,8 @@ const buttonVariants = cva(
       size: "default",
       transition: "none",
     },
-  },
+  }
 );
-
 interface IconProps {
   icon: React.ElementType;
   iconPlacement: "left" | "right";
@@ -135,7 +139,7 @@ interface IconRefProps {
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   isLoading?: boolean;
   asChild?: boolean;
 }
@@ -160,7 +164,7 @@ const Button = React.forwardRef<
       iconPlacement,
       ...props
     },
-    ref,
+    ref
   ) => {
     const Comp = asChild ? Slot : "button";
     return (
@@ -174,7 +178,7 @@ const Button = React.forwardRef<
             rounded,
             width,
             effect,
-          }),
+          })
         )}
         ref={ref}
         {...props}
@@ -200,8 +204,9 @@ const Button = React.forwardRef<
           ))}
       </Comp>
     );
-  },
+  }
 );
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
+

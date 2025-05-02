@@ -59,7 +59,7 @@ function ElegantShape({
             "absolute inset-0 rounded-full",
             "bg-gradient-to-r to-transparent",
             gradient,
-            "backdrop-blur-[2px] border-2 border-white/[0.15]",
+            "backdrop-blur-[2px] border-2 border-muted",
             "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
             "after:absolute after:inset-0 after:rounded-full",
             "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]",
@@ -173,8 +173,8 @@ function HeroGeometric({
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background/30">
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-background/5 via-transparent to-card/[0.05] blur-xl" /> */}
 
       <div className="absolute inset-0 overflow-hidden">
         <ElegantShape
@@ -232,9 +232,9 @@ function HeroGeometric({
             animate="visible"
             className="mb-8 md:mb-12 inline-block animate-bounce "
           >
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+            <div className="flex items-center gap-2 bg-card backdrop-blur-sm rounded-full px-4 py-2">
               <Sparkles className="h-4 w-4 text-pink-500" />
-              <span className="text-sm">{badge}</span>
+              <span className="text-sm font-medium">{badge}</span>
             </div>
           </motion.div>
 
@@ -245,13 +245,13 @@ function HeroGeometric({
             animate="visible"
           >
             <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-primary to-secondary/80">
                 {titlePre}
               </span>
               <br />
               <span
                 className={cn(
-                  "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 ",
+                  "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-card-foreground/90 to-rose-300",
                 )}
               >
                 {titleSuf}
@@ -265,7 +265,7 @@ function HeroGeometric({
             initial="hidden"
             animate="visible"
           >
-            <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
               {description}
             </p>
           </motion.div>
@@ -280,9 +280,10 @@ function HeroGeometric({
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/10 via-transparent to-accent/60 pointer-events-none" />
     </div>
   );
 }
 
 export { GeometricWrapper, HeroGeometric };
+

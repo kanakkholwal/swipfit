@@ -2,16 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Heart, List, Search, Shirt, TrendingUp, User } from "lucide-react";
+import { Heart, Search, Shirt, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "~/lib/auth-client";
-
-export default function Navbar() {
-  const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session } = useSession();
+import { ThemeSwitcher } from "./theme-switcher";
 
   const navItems = [
     { href: "/search", label: "Search", icon: Search },
@@ -20,8 +16,13 @@ export default function Navbar() {
     { href: "/outfit-assistant", label: "Assistant", icon: Heart },
   ];
 
+export default function Navbar() {
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
+
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/60">
+    <nav className="sticky top-0 z-50 w-full border-b border-border bg-card backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-8 flex items-center space-x-2">
           <Shirt className="h-6 w-6 text-pink-500" />
@@ -39,7 +40,7 @@ export default function Navbar() {
                 className={cn(
                   "flex items-center space-x-2 text-sm font-medium transition duration-500 rounded-md h-8 py-2 px-3",
                   "hover:bg-accent hover:text-accent-foreground",
-                  pathname === href ? "text-pink-500" : "text-gray-400",
+                  pathname === href ? "text-pink-500" : "text-muted-foreground",
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -49,22 +50,11 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
+            <ThemeSwitcher/>
             {session?.user ? (<>
-              {/* <Button
-                variant="ghost"
-                size="sm"
-                className="text-gray-400 hover:text-white"
-                asChild
-              >
-                <Link href="/profile/list">
-                  <List />
-                  List
-                </Link>
-              </Button> */}
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="text-gray-400 hover:text-white"
                 asChild
               >
                 <Link href="/profile">
@@ -75,9 +65,8 @@ export default function Navbar() {
             </>) : (
               <>
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  className="text-gray-400 hover:text-white"
                   asChild
                 >
                   <Link href="/sign-in">Sign In</Link>
@@ -100,7 +89,7 @@ export default function Navbar() {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <svg
-            className="h-6 w-6 text-gray-400"
+            className="h-6 w-6 text-muted-foreground"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -119,14 +108,14 @@ export default function Navbar() {
       </div>
 
       {isMenuOpen && (
-        <div className="border-t border-white/10 md:hidden">
+        <div className="border-t md:hidden">
           <div className="container space-y-4 py-4">
             {navItems.map(({ href, label, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}
                 className={`flex items-center space-x-2 text-sm font-medium transition-colors hover:text-pink-500 ${
-                  pathname === href ? "text-pink-500" : "text-gray-400"
+                  pathname === href ? "text-pink-500" : "text-muted-foreground"
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -134,9 +123,9 @@ export default function Navbar() {
                 <span>{label}</span>
               </Link>
             ))}
-            <div className="flex flex-col space-y-2 pt-4 border-t border-white/10">
+            <div className="flex flex-col space-y-2 pt-4 border-t">
               {session?.user ? (
-                <Button variant="ghost" size="sm" asChild>
+                <Button variant="outline" size="sm" asChild>
                   <Link href="/profile">
                     <User />
                     Profile
@@ -144,7 +133,7 @@ export default function Navbar() {
                 </Button>
               ) : (
                 <>
-                  <Button variant="ghost" size="sm" width="full" asChild>
+                  <Button variant="outline" size="sm" width="full" asChild>
                     <Link href="/sign-in">Sign In</Link>
                   </Button>
                   <Button

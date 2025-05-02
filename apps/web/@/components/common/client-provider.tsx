@@ -1,8 +1,7 @@
 "use client";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import { ThemeProvider as NextThemesProvider } from "next-themes";
-// import type { ThemeProviderProps } from "next-themes/dist/types";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Next13ProgressBar } from "next13-progressbar";
 import { Toaster as HotToaster } from "react-hot-toast";
 
@@ -16,8 +15,8 @@ const queryClient = new QueryClient({
   },
 });
 
-export function ClientProvider({ children }: { children: React.ReactNode }) {
-  return (
+export function ClientProvider({ children ,...props}: { children: React.ReactNode }) {
+  return (<NextThemesProvider defaultTheme="dark" themes={["light","dark","system"]} {...props}>
     <QueryClientProvider client={queryClient}>
       {children}
       <Next13ProgressBar
@@ -29,5 +28,5 @@ export function ClientProvider({ children }: { children: React.ReactNode }) {
       <HotToaster position="top-center" />
       <Toaster />
     </QueryClientProvider>
-  );
+  </NextThemesProvider>);
 }

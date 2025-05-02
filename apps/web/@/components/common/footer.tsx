@@ -26,13 +26,13 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-black z-10">
+    <footer className="bg-accent z-10">
       <div className="container px-4 md:px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-4 mr-auto">
             <AppLogo />
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Revolutionizing fashion discovery with AI-powered style
               recommendations.
             </p>
@@ -48,7 +48,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-muted-foreground hover:text-primary  font-medium transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -66,7 +66,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-muted-foreground hover:text-primary  font-medium transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -84,7 +84,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-muted-foreground hover:text-primary font-medium transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -95,9 +95,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-white/10">
+        <div className="mt-12 pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-muted-foreground">
               © 2024 SwipFit. All rights reserved.
             </p>
             <div className="flex space-x-6">
@@ -107,7 +107,7 @@ export default function Footer() {
                   <Link
                     key={social.href}
                     href={social.href}
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-muted-foreground hover:text-primary font-semibold transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

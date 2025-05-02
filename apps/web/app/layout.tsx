@@ -1,6 +1,6 @@
 import { ClientProvider } from "@/components/common/client-provider";
-import Footer from "@/components/common/footer";
-import Navbar from "@/components/common/navbar";
+// import Footer from "@/components/common/footer";
+// import Navbar from "@/components/common/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
@@ -26,16 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.variable} font-sans bg-black text-white dark:bg-black dark:text-white`}
+        className={`${spaceGrotesk.variable} font-sans bg-background`}
       >
         <ClientProvider>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          {/* <div className="flex min-h-screen flex-col"> */}
+            {/* <Navbar /> */}
+            {/* <main className="flex-1">{children}</main> */}
+            {children}
+            {/* <Footer /> */}
+          {/* </div> */}
           <Toaster />
         </ClientProvider>
       </body>

@@ -83,14 +83,14 @@ export default function SearchPageClient({
           >
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 z-10" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                 <Input
                   type="search"
                   name="query"
                   placeholder="Search outfits, styles, or brands..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value.trimStart())}
-                  className="w-full pl-12 pr-4 h-14 bg-white/10 backdrop-blur-md border-white/20 text-white placeholder:text-gray-400 focus:ring-pink-500"
+                  className="w-full pl-12 pr-4 h-14 bg-card backdrop-blur-md placeholder:text-muted-foreground focus:ring-pink-500"
                 />
               </div>
 
@@ -99,9 +99,9 @@ export default function SearchPageClient({
                 size="icon"
                 type="button"
                 onClick={() => setShowFilters(!showFilters)}
-                className="h-14 w-14 border-white/20 bg-white/10 backdrop-blur-md hover:bg-white/20"
+                className="h-14 w-14 bg-card backdrop-blur-md hover:bg-white/20"
               >
-                <SlidersHorizontal className="h-5 w-5 text-white" />
+                <SlidersHorizontal className="h-5 w-5" />
               </Button>
             </div>
             <div
@@ -114,7 +114,7 @@ export default function SearchPageClient({
             >
               <div
                 className={cn(
-                  "p-4 bg-black/35 backdrop-blur-md border border-white/10 rounded-lg shadow-xl z-50",
+                  "p-4 bg-card backdrop-blur-md border rounded-lg shadow-xl z-50",
                 )}
               >
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -122,7 +122,7 @@ export default function SearchPageClient({
                     value={selectedCategory}
                     onValueChange={setSelectedCategory}
                   >
-                    <SelectTrigger className="bg-transparent border-white/20">
+                    <SelectTrigger className="bg-transparent">
                       <SelectValue placeholder="Occasions" />
                     </SelectTrigger>
                     <SelectContent>
@@ -141,7 +141,7 @@ export default function SearchPageClient({
                     value={selectedColor}
                     onValueChange={setSelectedColor}
                   >
-                    <SelectTrigger className="bg-transparent border-white/20">
+                    <SelectTrigger className="bg-transparent">
                       <SelectValue placeholder="Color" />
                     </SelectTrigger>
                     <SelectContent>
@@ -157,7 +157,7 @@ export default function SearchPageClient({
                     value={selectedBrand}
                     onValueChange={setSelectedBrand}
                   >
-                    <SelectTrigger className="bg-transparent border-white/20">
+                    <SelectTrigger className="bg-transparent">
                       <SelectValue placeholder="Brand" />
                     </SelectTrigger>
                     <SelectContent>
@@ -173,7 +173,7 @@ export default function SearchPageClient({
                     value={selectedPrice}
                     onValueChange={setSelectedPrice}
                   >
-                    <SelectTrigger className="bg-transparent border-white/20">
+                    <SelectTrigger className="bg-transparent">
                       <SelectValue
                         placeholder="Season"
                         className="capitalize"
@@ -189,8 +189,8 @@ export default function SearchPageClient({
                   </Select>
                 </div>
 
-                <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
-                  <p className="text-sm text-gray-400">
+                <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                  <p className="text-sm text-muted-foreground">
                     {query.data?.length} results found
                   </p>
                   <Button
@@ -233,9 +233,9 @@ export default function SearchPageClient({
                 {query.data?.map((product) => (
                   <div
                     key={product.id}
-                    className="break-inside-avoid-column rounded-xl overflow-hidden bg-gray-900/50 backdrop-blur-sm hover:scale-[1.02] transition-transform duration-300"
+                    className="break-inside-avoid-column rounded-xl overflow-hidden bg-card backdrop-blur-sm hover:scale-[1.02] transition-transform duration-300"
                   >
-                    <div className="relative overflow-hidden aspect-[3/4] bg-gradient-to-t from-black/60 to-transparent">
+                    <div className="relative overflow-hidden aspect-[3/4] bg-gradient-to-t from-card/60 to-transparent">
                       <ProductImages images={product.images} />
                       <Button
                         variant="outline"
@@ -245,10 +245,10 @@ export default function SearchPageClient({
                           console.log(product);
                         }}
                         className={cn(
-                          "absolute top-4 right-4 h-10 w-10 rounded-full bg-black/50 backdrop-blur-sm border-white/20 hover:bg-black/70",
+                          "absolute top-4 right-4 h-10 w-10 rounded-full bg-background backdrop-blur-sm",
                           likedItems.includes(product.id)
                             ? "text-pink-500"
-                            : "text-white",
+                            : "text-foreground",
                         )}
                       >
                         <Heart
@@ -261,7 +261,7 @@ export default function SearchPageClient({
                       className="p-4 block"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold text-white">
+                        <h3 className="font-semibold text-foreground">
                           {product.brand}
                         </h3>
                         <div className="font-medium text-pink-500 flex items-center">
@@ -278,14 +278,14 @@ export default function SearchPageClient({
                           return (
                             <span
                               key={tag}
-                              className="px-2 py-1 rounded-full text-xs bg-white/10 text-gray-300 uppercase"
+                              className="px-2 py-1 rounded-full text-xs bg-card/10 text-muted-foreground uppercase"
                             >
                               {tag}
                             </span>
                           );
                         })}
                       </div>
-                      <div className="flex items-center mt-3 text-sm text-gray-400">
+                      <div className="flex items-center mt-3 text-sm text-muted-foreground">
                         <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500" />
                         {formatNumber(product.likes || 0)} likes
                       </div>
