@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -39,12 +40,12 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
         {imgIndex > 0 && (
           <div className="absolute left-5 top-1/2 -translate-y-1/2">
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="pointer-events-auto h-8 w-8 rounded-full opacity-0 transition-opacity group-hover:opacity-100"
+              className="pointer-events-auto h-8 w-8 rounded-full bg-white/80 opacity-0 transition-opacity group-hover:opacity-100"
               onClick={() => setImgIndex((prev) => prev - 1)}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4 text-neutral-600" />
             </Button>
           </div>
         )}
@@ -52,18 +53,18 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
         {imgIndex < images.length - 1 && (
           <div className="absolute right-5 top-1/2 -translate-y-1/2">
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="pointer-events-auto h-8 w-8 rounded-full opacity-0 transition-opacity group-hover:opacity-100"
+              className="pointer-events-auto h-8 w-8 rounded-full bg-white/80 opacity-0 transition-opacity group-hover:opacity-100"
               onClick={() => setImgIndex((prev) => prev + 1)}
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4 text-neutral-600" />
             </Button>
           </div>
         )}
 
         <div className="absolute bottom-2 w-full flex justify-center">
-          <div className="flex min-w-9 items-center justify-center rounded-md bg-background px-2 py-0.5 text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
+          <div className="flex min-w-9 items-center justify-center rounded-md bg-black/80 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
             {imgIndex + 1}/{images.length}
           </div>
         </div>
@@ -71,7 +72,6 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
 
       <motion.div
         drag="x"
-        key="image-swiper"
         dragConstraints={{
           left: 0,
           right: 0,
@@ -90,13 +90,13 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
           type: "spring",
           duration: 0.2,
         }}
-        className="flex h-full cursor-grab items-center rounded-[inherit] active:cursor-grabbing"
+        className=" flex h-full cursor-grab items-center rounded-[inherit] active:cursor-grabbing"
       >
         {images.map((image, imgIndex) => {
           return (
-            <div
+            <motion.div
               key={image.url + imgIndex.toString()}
-              className="relative h-full w-full shrink-0 overflow-hidden bg-accent object-cover first:rounded-l-[inherit] last:rounded-r-[inherit]"
+              className="relative h-full w-full shrink-0 overflow-hidden bg-neutral-800 object-cover first:rounded-l-[inherit] last:rounded-r-[inherit]"
             >
               <Image
                 src={image.url}
@@ -106,7 +106,7 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 unoptimized
               />
-            </div>
+            </motion.div>
           );
         })}
       </motion.div>

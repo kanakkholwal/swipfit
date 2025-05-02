@@ -81,12 +81,13 @@ function GeometricWrapper({
 }) {
   return (
     <div
+    
       className={cn(
-        "relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]",
+        "relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background/30",
         className,
       )}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+      {/* <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" /> */}
 
       <div className="absolute inset-0 overflow-hidden">
         <ElegantShape
@@ -141,7 +142,7 @@ function GeometricWrapper({
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background/10 via-transparent to-accent/60 pointer-events-none" />
     </div>
   );
 }

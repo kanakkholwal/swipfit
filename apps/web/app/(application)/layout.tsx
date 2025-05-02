@@ -49,7 +49,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                   {session?.user?.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <span className="truncate font-semibold">{session?.user?.name}</span>
+              {/* <span className="truncate font-semibold">{session?.user?.name}</span> */}
               {/* </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
