@@ -53,9 +53,9 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
         {imgIndex < images.length - 1 && (
           <div className="absolute right-5 top-1/2 -translate-y-1/2">
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="pointer-events-auto h-8 w-8 rounded-full bg-white/80 opacity-0 transition-opacity group-hover:opacity-100"
+              className="pointer-events-auto h-8 w-8 rounded-full bg-background opacity-0 transition-opacity group-hover:opacity-100"
               onClick={() => setImgIndex((prev) => prev + 1)}
             >
               <ChevronRight className="h-4 w-4 text-neutral-600" />
@@ -64,7 +64,7 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
         )}
 
         <div className="absolute bottom-2 w-full flex justify-center">
-          <div className="flex min-w-9 items-center justify-center rounded-md bg-black/80 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+          <div className="flex min-w-9 items-center justify-center rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100">
             {imgIndex + 1}/{images.length}
           </div>
         </div>
@@ -96,7 +96,7 @@ export function ImageSwiper({ images, className, ...props }: ImageSwiperProps) {
           return (
             <motion.div
               key={image.url + imgIndex.toString()}
-              className="relative h-full w-full shrink-0 overflow-hidden bg-neutral-800 object-cover first:rounded-l-[inherit] last:rounded-r-[inherit]"
+              className="relative h-full w-full shrink-0 overflow-hidden bg-background object-cover first:rounded-l-[inherit] last:rounded-r-[inherit]"
             >
               <Image
                 src={image.url}
