@@ -153,6 +153,7 @@
   -webkit-text-fill-color: hsl(var(--foreground)) !important;
   @apply border-emerald-500 bg-emerald-200 dark:border-emerald-900 dark:bg-emerald-700;
   
+  
 }
 
 @layer base {

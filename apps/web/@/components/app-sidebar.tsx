@@ -37,7 +37,7 @@ const sidebar_links =   [
     items: [],
   },
   {
-    title: "Models",
+    title: "Trends",
     url: "/trends",
     icon: TrendingUp,
     items:[],

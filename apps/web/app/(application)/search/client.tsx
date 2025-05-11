@@ -26,11 +26,14 @@ import type { ProductJson } from "~/types/product";
 export default function SearchPageClient({
   initialData,
   filters,
+  initialQuery
 }: {
   initialData: ProductJson[];
   filters: Record<string, string[]>;
+  initialQuery?: string;
 }) {
-  const [searchQuery, setSearchQuery] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState(initialQuery || "");
 
   const query = useQuery<ProductJson[]>({
     queryKey: ["search_results"],
@@ -99,7 +102,7 @@ export default function SearchPageClient({
                 size="icon"
                 type="button"
                 onClick={() => setShowFilters(!showFilters)}
-                className="h-14 w-14 bg-card backdrop-blur-md hover:bg-white/20"
+                className="h-14 w-14 bg-card backdrop-blur-md hover:bg-white/20 hidden"
               >
                 <SlidersHorizontal className="h-5 w-5" />
               </Button>
@@ -285,9 +288,14 @@ export default function SearchPageClient({
                           );
                         })}
                       </div>
-                      <div className="flex items-center mt-3 text-sm text-muted-foreground">
-                        <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500" />
+                      <div className="flex items-center justify-between mt-3 text-sm text-muted-foreground">
+                        <span>
+                        <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500 inline-block" />
                         {formatNumber(product.likes || 0)} likes
+                        </span>
+                        <span className="font-light uppercase text-xs">
+                          {new URL(product.productUrl).hostname}
+                        </span>
                       </div>
                     </Link>
                   </div>

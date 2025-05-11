@@ -205,7 +205,7 @@ export default function SignUpForm() {
             <Button
               type="button"
               disabled={isLoading}
-              className="rounded-lg w-full bg-white text-black border border-gray-300"
+              variant="outline"
               onClick={async () => {
                 setIsLoading(true);
                 await authClient.signIn.social({

@@ -1,12 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import {
-  type ComponentPropsWithoutRef,
-  useEffect,
-  useId,
-  useRef,
-  useState,
+    type ComponentPropsWithoutRef,
+    useEffect,
+    useId,
+    useRef,
+    useState,
 } from "react";
 
 import { cn } from "@/lib/utils";

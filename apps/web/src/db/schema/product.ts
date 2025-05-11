@@ -1,5 +1,6 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
+  index,
   integer,
   jsonb,
   pgTable,
@@ -76,14 +77,26 @@ export const userProductPreferences = pgTable(
       .notNull()
       .references(() => products.id, { onDelete: "cascade" }), // FK to products.id
 
-    action: text("action").notNull(), // 'like', 'superlike'
-    weight: integer("weight").notNull(), // 1 (like), 2 (superlike)
+    action: text("action").notNull(), // 'like', 'super_like'
+    weight: integer("weight").notNull(), // 1 (like), 2 (super_like)
     createdAt: timestamp("created_at").defaultNow(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.userId, table.productId] }),
   }),
 );
+export const userProductActions = pgTable("user_product_actions", {
+  id: text("id").primaryKey().generatedAlwaysAs("uuid"),
+  userId: text("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  productId: text("product_id").notNull().references(() => products.id, { onDelete: "cascade" }),
+  action: text("action").notNull(),      // e.g. 'view', 'like', 'super_like'
+  weight: integer("weight").notNull(),   // e.g. 1=view, 2=like, 3=super_like
+  createdAt: timestamp("created_at").defaultNow(),
+}, table => ({
+  idxUserAction: index("idx_user_action").on(table.userId, table.action),
+  idxProduct: index("idx_product").on(table.productId),
+}));
+
 
 // export const productSearchQueries = pgTable("product_search_queries", {
 //     id: serial("id").primaryKey(),

@@ -12,7 +12,7 @@ import { ThemeSwitcher } from "./theme-switcher";
   const navItems = [
     { href: "/search", label: "Search", icon: Search },
     { href: "/trends", label: "Trends", icon: TrendingUp },
-    { href: "/swipe", label: "Discover", icon: Shirt },
+    { href: "/discover", label: "Discover", icon: Shirt },
     { href: "/outfit-assistant", label: "Assistant", icon: Heart },
   ];
 

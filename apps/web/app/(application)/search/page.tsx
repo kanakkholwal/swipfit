@@ -20,7 +20,7 @@ export default async function SearchPage(props: {
   return (
     <div className="min-h-screen">
 
-      <SearchPageClient initialData={products} filters={filters} />
+      <SearchPageClient initialData={products} filters={filters} initialQuery={query}/>
     </div>
   );
 }

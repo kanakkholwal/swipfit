@@ -1,7 +1,7 @@
 "use client";
-import { motion, useAnimation } from "motion/react";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect, useState } from "react";
 
 // Interface for grid configuration structure
 interface GridConfig {

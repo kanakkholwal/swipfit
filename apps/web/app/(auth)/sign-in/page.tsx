@@ -105,7 +105,7 @@ export default function SignInForm() {
                   <FormItem>
                     <div className="relative group">
                       <FormLabel className="absolute top-1/2 -translate-y-1/2 left-4 z-50">
-                        <LuMail className="w-4 h-4 dark:text-gray-300" />
+                        <LuMail className="w-4 h-4" />
                       </FormLabel>
                       <FormControl className="relative">
                         <Input
@@ -131,7 +131,7 @@ export default function SignInForm() {
                   <FormItem>
                     <div className="relative group">
                       <FormLabel className="absolute top-1/2 -translate-y-1/2 left-4 z-50">
-                        <BiLockOpenAlt className="w-4 h-4 dark:text-gray-300" />
+                        <BiLockOpenAlt className="w-4 h-4" />
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -188,7 +188,7 @@ export default function SignInForm() {
             <Button
               type="button"
               disabled={isLoading}
-              className="rounded-lg w-full bg-white text-black border border-gray-300"
+              variant="outline"
               onClick={async () => {
                 setIsLoading(true);
                 await authClient.signIn.social({

@@ -31,7 +31,7 @@ export default function HomePage() {
       >
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" variant="gradient_pink" asChild>
-            <Link href="/swipe">
+            <Link href="/discover">
               Start Your Style Journey
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -41,7 +41,7 @@ export default function HomePage() {
             variant="outline"
             asChild
           >
-            <Link href="/search">Explore Trends</Link>
+            <Link href="/trends">Explore Trends</Link>
           </Button>
         </div>
       </HeroGeometric>
@@ -221,7 +221,7 @@ export default function HomePage() {
               className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               asChild
             >
-              <Link href="/swipe">
+              <Link href="/register">
                 Get Started Now <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

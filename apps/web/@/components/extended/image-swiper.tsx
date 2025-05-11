@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { motion, useMotionValue } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, useMotionValue } from "motion/react";
 import Image from "next/image";
 import * as React from "react";
 import type { ProductType } from "~/types/product";

@@ -5,5 +5,5 @@ export default function SwipeRouteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <GeometricWrapper>{children}</GeometricWrapper>;
+  return <GeometricWrapper className="fixed inset-0 top-20" wrapperParentClassName="p-0">{children}</GeometricWrapper>;
 }

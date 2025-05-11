@@ -8,16 +8,16 @@ export function ProductSpecifications({ product }: { product: ProductJson }) {
       <div className="pt-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="border-b border-muted pb-2">
-            <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
+            <p className="font-semibold capitalize text-xs text-card-foreground/95">
               Brand
             </p>
-            <p className="text-gray-100 capitalize">{product.brand}</p>
+            <p className="text-muted-foreground capitalize">{product.brand}</p>
           </div>
           <div className="border-b border-muted pb-2">
-            <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
+            <p className="font-semibold capitalize text-xs text-card-foreground/95">
               Suitable to wear on
             </p>
-            <p className="text-gray-100 capitalize">
+            <p className="text-muted-foreground capitalize">
               {product.occasions.join(", ")}
             </p>
           </div>
@@ -26,10 +26,10 @@ export function ProductSpecifications({ product }: { product: ProductJson }) {
           ).map(([key, value]: [string, unknown]) => {
             return (
               <div key={key} className="border-b border-muted pb-2">
-                <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
+                <p className="font-semibold capitalize text-xs text-card-foreground/95">
                   {key}
                 </p>
-                <p className="text-gray-100 capitalize">
+                <p className="text-muted-foreground capitalize">
                   {value === null || value === "unknown"
                     ? "-"
                     : (value as string)}

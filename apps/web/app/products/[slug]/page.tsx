@@ -3,9 +3,12 @@ import ReviewSection from "@/components/application/product/ReviewSection";
 import SimilarOutfits from "@/components/application/product/SimilarOutfits";
 import WishlistButton from "@/components/application/product/WishlistButton";
 import { ProductSpecifications } from "@/components/application/product/specifications";
+import Navbar from "@/components/common/navbar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getWebsiteByUrl } from "@/constants/refs";
 import { ExternalLink, Star } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -57,8 +60,12 @@ export default async function ProductPage({ params }: { params: TParams }) {
   targetUrl.searchParams.append("utm_campaign", product.slug);
   targetUrl.searchParams.append("utm_content", "product-page");
 
+  const refSite = getWebsiteByUrl(product.productUrl);
+  
+
   return (
     <div className="min-h-screen">
+      <Navbar />
       <main className="container mx-auto px-4 py-8 max-w-[1200px] mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Suspense fallback={<div>Loading gallery...</div>}>
@@ -67,13 +74,36 @@ export default async function ProductPage({ params }: { params: TParams }) {
 
           <div className="space-y-6">
             <div className="mb-4">
-              <h2 className="text-2xl font-semibold mb-2 dark:text-gray-300 italic">
-                {product.brand}
-              </h2>
-              <h3 className="text-xl font-semibold mb-2 dark:text-gray-100">
+              <div className="mb-2">
+                {refSite ? (
+                  <Link
+                    href={refSite?.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      src={refSite?.icon}
+                      alt={refSite?.name}
+                      width={320}
+                      height={60}
+                      className="inline-block ml-1 h-8 w-auto object-contain"
+                      /> 
+                  </Link>
+                ):(
+                  <Link
+                    href={new URL(product.productUrl).hostname}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline"
+                  >
+                    {targetHostname}
+                  </Link>
+                )}
+              </div>
+              <h3 className="text-xl font-semibold mb-2">
                 {product.title}
               </h3>
-              <p className="text-gray-500 dark:text-gray-300 text-sm">
+              <p className="text-foreground text-sm font-semibold mb-2">
                 Liked by{" "}
                 <span className="font-semibold">
                   {formatNumber(product.likes)}
@@ -118,16 +148,16 @@ export default async function ProductPage({ params }: { params: TParams }) {
                     Buy now <ExternalLink />
                   </Link>
                 </Button>
-                <span className="inline-block text-[8px] italic text-gray-500 dark:text-gray-300 mt-1 ml-auto">
+                <span className="inline-block text-[8px] italic text-muted-foreground mt-1 ml-auto">
                   check it out on {targetHostname}
                 </span>
               </div>
             </div>
             <div className="pb-2">
-              <p className="font-semibold capitalize text-xs text-[#CCCCCC]">
+              <p className="font-semibold capitalize text-xs text-muted-foreground">
                 Tags
               </p>
-              <p className="text-sm dark:text-gray-100 capitalize">
+              <p className="text-sm capitalize">
                 #{product.tags.join(", #")}
               </p>
             </div>

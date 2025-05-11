@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import { motion } from "motion/react";
 
 function ElegantShape({
   className,
@@ -74,10 +74,12 @@ function GeometricWrapper({
   children,
   className,
   wrapperClassName,
+  wrapperParentClassName,
 }: {
   children: React.ReactNode;
   className?: string;
   wrapperClassName?: string;
+  wrapperParentClassName?: string;
 }) {
   return (
     <div
@@ -136,7 +138,7 @@ function GeometricWrapper({
         />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 md:px-6">
+      <div className={cn("relative z-10 container mx-auto px-4 md:px-6",wrapperParentClassName)}>
         <div className={cn("max-w-5xl mx-auto text-center", wrapperClassName)}>
           {children}
         </div>

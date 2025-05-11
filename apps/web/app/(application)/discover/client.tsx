@@ -4,8 +4,8 @@ import { ImageSwiper } from "@/components/extended/image-swiper";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { Heart, LogOut, RotateCcw, Sparkles, X } from "lucide-react";
-import { motion, useMotionValue, useTransform } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -49,10 +49,10 @@ export default function SwipePageClient({
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center flex-col space-y-6">
+    <div className="flex items-center justify-center flex-col space-y-6">
       {currentIndex < products.length ? (<>
         <motion.div
-          className="relative w-full max-w-md shadow-xl rounded-xl overflow-hidden aspect-[3/4] bg-gradient-to-t from-black/60 to-transparent"
+          className="relative w-full max-w-md shadow-xl rounded-xl overflow-hidden aspect-[3/4] max-h-[32rem]  bg-gradient-to-t from-black/60 to-transparent mask-y-from-70% mask-y-to-90%"
           style={{ x, opacity, rotate }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
@@ -77,13 +77,13 @@ export default function SwipePageClient({
               priority
             />
           )}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 text-white">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
             <h3 className="text-xl font-bold">
               {products[currentIndex].title}
             </h3>
 
             <div className="flex items-center mt-3 text-sm">
-              <p className="text-gray-400 flex items-center">
+              <p className="text-muted-foreground flex items-center">
                 <Heart className="h-4 w-4 mr-1 fill-pink-500 text-pink-500 inline-block" />
                 {formatNumber(products[currentIndex].likes || 0)} likes
               </p>
@@ -106,7 +106,7 @@ export default function SwipePageClient({
             effect="shineHover"
             onClick={() => handleSwipe("dislike")}
           >
-            <X className="h-6 w-6 text-destructive" />
+            <X className="text-destructive" />
           </Button>
 
           <Button
@@ -116,7 +116,7 @@ export default function SwipePageClient({
             onClick={handleUndo}
             disabled={swipeHistory.length === 0}
           >
-            <RotateCcw className="h-6 w-6 text-muted-foreground" />
+            <RotateCcw className="text-muted-foreground" />
           </Button>
 
           <Button
@@ -126,7 +126,7 @@ export default function SwipePageClient({
             rounded="full"
             onClick={() => handleSwipe("super_like")}
           >
-            <Sparkles className="h-6 w-6 text-yellow-500" />
+            <Sparkles className="text-yellow-500" />
           </Button>
 
           <Button
@@ -136,7 +136,7 @@ export default function SwipePageClient({
             effect="shineHover"
             onClick={() => handleSwipe("like")}
           >
-            <Heart className="h-6 w-6 text-red-500" />
+            <Heart className="text-red-500" />
           </Button>
           <Button
             variant="outline"
@@ -147,7 +147,7 @@ export default function SwipePageClient({
           >
             <Link href={`/products/${products[currentIndex]?.slug}`}>
               {/* appropriate icon */}
-              <LogOut className="h-6 w-6 text-emerald-500" />
+              <LogOut className="text-emerald-500" />
             </Link>
           </Button>
         </div>

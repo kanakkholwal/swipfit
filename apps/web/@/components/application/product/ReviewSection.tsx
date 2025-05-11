@@ -16,7 +16,7 @@ export default function ReviewSection({
   return (
     <section className="mt-12">
       <h2 className="text-2xl font-bold mb-4">Customer Reviews</h2>
-      <div className="bg-[#1A1A1A] p-6 rounded-lg">
+      <div className="bg-secondary/5 p-6 rounded-lg">
         <div className="flex items-center mb-4">
           <div className="flex items-center mr-4">
             {[...Array(5)].map((_, i) => (
@@ -26,7 +26,7 @@ export default function ReviewSection({
                 className={`w-5 h-5 ${
                   i < Math.round(summary.averageRating)
                     ? "text-yellow-400 fill-current"
-                    : "text-gray-400"
+                    : "text-muted-foreground"
                 }`}
               />
             ))}
@@ -34,11 +34,11 @@ export default function ReviewSection({
           <span className="text-lg font-semibold">
             {summary.averageRating.toFixed(1)}
           </span>
-          <span className="text-[#CCCCCC] ml-2">
+          <span className="text-muted-foreground ml-2">
             ({summary.totalReviews} reviews)
           </span>
         </div>
-        <p className="text-[#CCCCCC]">{summary.summary}</p>
+        <p className="text-muted-foreground">{summary.summary}</p>
       </div>
     </section>
   );

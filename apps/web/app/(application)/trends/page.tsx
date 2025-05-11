@@ -13,7 +13,7 @@ export default async function TrendsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Search Section */}
-      <div className="p-4">
+      <div className="p-4 mt-5">
         <h1 className="text-2xl font-bold">
           <TrendingUp className="inline size-6 mr-2 " />
           Trending Outfits
