@@ -1,5 +1,5 @@
 import MyntraLogo from '@/assets/myntra.svg';
-import { StaticImageData } from 'next/image';
+import type { StaticImageData } from 'next/image';
 
 
 export type RefWebsiteType = {
