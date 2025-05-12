@@ -310,9 +310,12 @@ export async function searchProductByQuery(
     // Perform vector search
     const matchingProducts = await db.query.products.findMany({
       where: (fields, operators) =>
-        operators.or(
+        operators.and(
+          operators.or(
           ...queryResponse.map((match) => operators.eq(fields.id, match.id)),
         ),
+        operators.eq(fields.genderGroup, "man")
+      ),
       orderBy(fields, operators) {
         return operators.desc(fields.likes);
       },
